@@ -3,217 +3,338 @@
 <head>
 <meta charset="UTF-8">
 <title>Asistencia RRHH</title>
+
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#E4002B">
 
-<!-- 🔥 NECESARIO PARA PWA -->
+<!-- PWA -->
 <link rel="manifest" href="manifest.json">
-
-<!-- 🔥 ICONO (MEJORA INSTALACIÓN) -->
 <link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 <style>
 /* TODO TU CSS ORIGINAL SIN CAMBIOS */
 :root{
-  --adecco:#E4002B;
-  --adecco-dark:#B30022;
-
-  --green:#2E7D32;
-  --green-dark:#1B5E20;
-
-  --yellow:#F9A825;
-  --yellow-dark:#F57F17;
-
-  --gray:#F4F5F7;
-  --text:#1F2937;
-  --muted:#6B7280;
+--adecco:#E4002B;
+--adecco-dark:#B30022;
+--green:#2E7D32;
+--green-dark:#1B5E20;
+--yellow:#F9A825;
+--yellow-dark:#F57F17;
+--gray:#F4F5F7;
+--text:#1F2937;
+--muted:#6B7280;
 }
-
-/* RESET */
 *{box-sizing:border-box;font-family:"Segoe UI",system-ui}
 body{
-  margin:0;height:100vh;display:flex;
-  align-items:center;justify-content:center;
-  background:linear-gradient(145deg,#ECEFF1,#CFD8DC);
+margin:0;height:100vh;display:flex;
+align-items:center;justify-content:center;
+background:linear-gradient(145deg,#ECEFF1,#CFD8DC);
 }
-
-/* CARD */
 .card{
-  width:100%;max-width:390px;padding:34px;
-  border-radius:28px;background:#fff;
-  text-align:center;
-  box-shadow:0 30px 60px rgba(0,0,0,.25);
-  animation:fadeUp .6s ease;
+width:100%;max-width:390px;padding:34px;
+border-radius:28px;background:#fff;
+text-align:center;
+box-shadow:0 30px 60px rgba(0,0,0,.25);
+animation:fadeUp .6s ease;
 }
 @keyframes fadeUp{
-  from{opacity:0;transform:translateY(30px)}
-  to{opacity:1}
+from{opacity:0;transform:translateY(30px)}
+to{opacity:1}
 }
-
-/* LOGO */
 .logo{
-  font-size:30px;
-  font-weight:900;
-  color:var(--adecco);
-  margin-bottom:20px;
+font-size:30px;
+font-weight:900;
+color:var(--adecco);
+margin-bottom:20px;
 }
-
-/* INPUT */
 input{
-  width:100%;padding:16px;border-radius:16px;
-  border:1px solid #E5E7EB;
-  text-align:center;font-size:16px;
-  margin-bottom:16px;
+width:100%;padding:16px;border-radius:16px;
+border:1px solid #E5E7EB;
+text-align:center;font-size:16px;
+margin-bottom:16px;
 }
 input:focus{
-  outline:none;border-color:var(--adecco);
-  box-shadow:0 0 0 3px rgba(228,0,43,.18);
+outline:none;border-color:var(--adecco);
+box-shadow:0 0 0 3px rgba(228,0,43,.18);
 }
-
-/* BUTTONS */
 button{
-  width:100%;padding:16px;border:none;
-  border-radius:16px;font-size:16px;
-  font-weight:700;cursor:pointer;
-  transition:.25s;
+width:100%;padding:16px;border:none;
+border-radius:16px;font-size:16px;
+font-weight:700;cursor:pointer;
+transition:.25s;
 }
 button:hover{transform:translateY(-2px)}
-
-/* BUSCAR */
 .btn{
-  background:linear-gradient(180deg,var(--adecco),var(--adecco-dark));
-  color:#fff;
-  box-shadow:0 14px 28px rgba(228,0,43,.45);
+background:linear-gradient(180deg,var(--adecco),var(--adecco-dark));
+color:#fff;
+box-shadow:0 14px 28px rgba(228,0,43,.45);
 }
-
-/* ENTRADA */
 .btn-entry{
-  background:linear-gradient(180deg,var(--green),var(--green-dark));
-  color:#fff;
-  box-shadow:0 14px 28px rgba(46,125,50,.45);
+background:linear-gradient(180deg,var(--green),var(--green-dark));
+color:#fff;
+box-shadow:0 14px 28px rgba(46,125,50,.45);
 }
-
-/* SALIDA */
 .btn-exit{
-  background:linear-gradient(180deg,var(--yellow),var(--yellow-dark));
-  color:#000;
-  box-shadow:0 14px 28px rgba(249,168,37,.45);
+background:linear-gradient(180deg,var(--yellow),var(--yellow-dark));
+color:#000;
+box-shadow:0 14px 28px rgba(249,168,37,.45);
 }
-
-/* FOTO CON MARCO */
 .foto{
-  width:120px;height:120px;
-  border-radius:22px;
-  object-fit:cover;
-  margin:14px auto;
-  border:4px solid var(--adecco);
-  box-shadow:0 12px 26px rgba(228,0,43,.35);
+width:120px;height:120px;
+border-radius:22px;
+object-fit:cover;
+margin:14px auto;
+border:4px solid var(--adecco);
+box-shadow:0 12px 26px rgba(228,0,43,.35);
 }
-
-/* RELOJ */
 .reloj{
-  margin-top:8px;
-  font-weight:700;
-  color:var(--text);
+margin-top:8px;
+font-weight:700;
+color:var(--text);
 }
 .fecha{
-  font-size:14px;
-  color:var(--muted);
-  margin-bottom:14px;
+font-size:14px;
+color:var(--muted);
+margin-bottom:14px;
 }
-
-/* MODAL */
 .modal{
-  display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,.45);
-  backdrop-filter:blur(6px);
-  justify-content:center;align-items:center;
-  z-index:10;
+display:none;position:fixed;inset:0;
+background:rgba(0,0,0,.45);
+backdrop-filter:blur(6px);
+justify-content:center;align-items:center;
+z-index:10;
 }
-
-/* CONFIRM */
 .confirm{
-  background:#fff;padding:36px;border-radius:28px;
-  text-align:center;width:85%;max-width:320px;
-  box-shadow:0 30px 60px rgba(0,0,0,.3);
-  animation:pop .45s ease;
+background:#fff;padding:36px;border-radius:28px;
+text-align:center;width:85%;max-width:320px;
+box-shadow:0 30px 60px rgba(0,0,0,.3);
+animation:pop .45s ease;
 }
 @keyframes pop{
-  from{opacity:0;transform:scale(.85)}
-  to{opacity:1}
+from{opacity:0;transform:scale(.85)}
+to{opacity:1}
 }
-
-/* CHECK */
 .check{
-  width:78px;height:78px;border-radius:50%;
-  border:4px solid;display:flex;
-  align-items:center;justify-content:center;
-  margin:0 auto 16px;
+width:78px;height:78px;border-radius:50%;
+border:4px solid;display:flex;
+align-items:center;justify-content:center;
+margin:0 auto 16px;
 }
 .check svg{
-  width:42px;height:42px;
-  fill:none;stroke-width:4;
-  stroke-dasharray:100;
-  stroke-dashoffset:100;
-  animation:draw .6s ease forwards .2s;
+width:42px;height:42px;
+fill:none;stroke-width:4;
+stroke-dasharray:100;
+stroke-dashoffset:100;
+animation:draw .6s ease forwards .2s;
 }
 @keyframes draw{to{stroke-dashoffset:0}}
-
-/* COLORES CONFIRM */
 .confirm.entrada .check,
 .confirm.entrada svg{
-  border-color:var(--green);
-  stroke:var(--green);
+border-color:var(--green);
+stroke:var(--green);
 }
 .confirm.salida .check,
 .confirm.salida svg{
-  border-color:var(--yellow);
-  stroke:var(--yellow);
+border-color:var(--yellow);
+stroke:var(--yellow);
 }
-
-/* BADGE */
 .badge{
-  padding:10px 18px;border-radius:20px;
-  font-weight:700;
+padding:10px 18px;border-radius:20px;
+font-weight:700;
 }
 .confirm.entrada .badge{background:var(--green);color:#fff}
 .confirm.salida .badge{background:var(--yellow);color:#000}
-
-/* LOADER */
 #loader{
-  display:none;position:fixed;inset:0;
-  background:rgba(255,255,255,.75);
-  justify-content:center;align-items:center;
-  z-index:20;
+display:none;position:fixed;inset:0;
+background:rgba(255,255,255,.75);
+justify-content:center;align-items:center;
+z-index:20;
 }
 .spinner{
-  width:48px;height:48px;border-radius:50%;
-  border:4px solid #ddd;
-  border-top:4px solid var(--adecco);
-  animation:spin 1s linear infinite;
+width:48px;height:48px;border-radius:50%;
+border:4px solid #ddd;
+border-top:4px solid var(--adecco);
+animation:spin 1s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-
 #reader{width:230px}
+
+/* BOTON INSTALAR */
+#installBtn{
+margin-top:10px;
+background:#000;
+color:#fff;
+display:none;
+}
 </style>
 </head>
 
 <body>
 
-<!-- TODO TU HTML ORIGINAL SIN CAMBIOS -->
+<div id="loader"><div class="spinner"></div></div>
+
+<!-- CONFIRMACION -->
+<div id="confirmacion" class="modal">
+<div id="confirmBox" class="confirm">
+<div class="check">
+<svg viewBox="0 0 52 52">
+<path d="M14 27 L23 36 L38 16"/>
+</svg>
+</div>
+<div id="badgeTexto" class="badge"></div>
+</div>
+</div>
+
+<!-- QR -->
+<div id="qrModal" class="modal">
+<div class="card">
+<h3 id="tipoTitulo"></h3>
+<div id="reader"></div><br>
+<button class="btn-exit" onclick="cerrarQR()">Cancelar</button>
+</div>
+</div>
+
+<div class="card">
+<div class="logo">Asistencia ADECCO</div>
+
+<div id="p1">
+<input id="dni" placeholder="Ingrese DNI" maxlength="8" onkeypress="if(event.key==='Enter') buscar()">
+<button class="btn" onclick="buscar()">Buscar</button>
+</div>
+
+<div id="p2" style="display:none">
+<img id="foto" class="foto">
+<h3 id="nombre"></h3>
+<p id="cargo" style="color:var(--muted)"></p>
+<div class="reloj" id="hora"></div>
+<div class="fecha" id="fecha"></div>
+<button class="btn-entry" onclick="abrirQR('ENTRADA')">ENTRADA</button><br><br>
+<button class="btn-exit" onclick="abrirQR('SALIDA')">SALIDA</button>
+</div>
+
+<!-- BOTON INSTALAR -->
+<button id="installBtn">Instalar App</button>
+
+</div>
 
 <script>
-/* TODO TU JS ORIGINAL SIN CAMBIOS */
+/* ===== TU LOGICA ORIGINAL ===== */
+const API_URL="https://script.google.com/macros/s/AKfycbz2C6m96JXfrZVgzaLODWaPyt5Qg0WHKlsjUYnwF36ZZdi2n38Mq-3wI80qCYoOgnT_/exec";
+const QR_VALIDO="RRHH_ASISTENCIA_OK";
+let trabajador={},tipoActual="",qr=null,bloqueado=false;
+
+const deviceId=localStorage.getItem("DEVICE_ID")||crypto.randomUUID();
+localStorage.setItem("DEVICE_ID",deviceId);
+
+function buscar(){
+if(dni.value.length!==8)return;
+loader.style.display="flex";
+
+fetch(API_URL,{method:"POST",body:new URLSearchParams({action:"buscar",dni:dni.value})})
+.then(r=>r.json())
+.then(r=>{
+if(!r.ok)return mostrarError(r.mensaje);
+
+trabajador=r.data;
+p1.style.display="none";
+p2.style.display="block";
+
+nombre.innerText=trabajador.nombre;
+cargo.innerText=trabajador.cargo;
+foto.src=trabajador.foto||"https://via.placeholder.com/120";
+})
+.finally(()=>loader.style.display="none");
+}
+
+function abrirQR(t){
+if(bloqueado)return;
+
+tipoActual=t;
+tipoTitulo.innerText="Registrar "+t;
+qrModal.style.display="flex";
+
+if(!qr)qr=new Html5Qrcode("reader");
+
+qr.start({facingMode:"environment"},{fps:8,qrbox:200},txt=>{
+if(txt!==QR_VALIDO||bloqueado)return;
+
+bloqueado=true;
+cerrarQR();
+registrar();
+});
+}
+
+function cerrarQR(){
+qrModal.style.display="none";
+qr?.stop().catch(()=>{});
+}
+
+function registrar(){
+loader.style.display="flex";
+
+navigator.geolocation.getCurrentPosition(p=>{
+fetch(API_URL,{method:"POST",body:new URLSearchParams({
+action:"registrar",
+dni:trabajador.dni,
+nombre:trabajador.nombre,
+cargo:trabajador.cargo,
+tipo:tipoActual,
+lat:p.coords.latitude,
+lng:p.coords.longitude,
+deviceId,
+qr:QR_VALIDO
+})})
+.then(r=>r.json())
+.then(r=>{
+loader.style.display="none";
+mostrarConfirmacion(tipoActual,r.mensaje);
+setTimeout(()=>location.reload(),2200);
+});
+});
+}
+
+function mostrarConfirmacion(tipo,msg){
+confirmBox.className="confirm "+(tipo==="ENTRADA"?"entrada":"salida");
+badgeTexto.innerText=msg;
+confirmacion.style.display="flex";
+}
+
+function actualizarReloj(){
+const f=new Date();
+hora.innerText=f.toLocaleTimeString();
+fecha.innerText=f.toLocaleDateString("es-PE",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+}
+setInterval(actualizarReloj,1000);
+actualizarReloj();
+
+/* ===== INSTALL PROMPT ===== */
+let deferredPrompt;
+
+window.addEventListener("beforeinstallprompt",(e)=>{
+e.preventDefault();
+deferredPrompt=e;
+installBtn.style.display="block";
+});
+
+installBtn.addEventListener("click",()=>{
+installBtn.style.display="none";
+deferredPrompt.prompt();
+deferredPrompt.userChoice.then(()=>{
+deferredPrompt=null;
+});
+});
 </script>
 
-<!-- 🔥 SERVICE WORKER (MEJORADO SOLO EN RUTA) -->
+<!-- SERVICE WORKER -->
 <script>
 if ("serviceWorker" in navigator) {
-  navigator.serviceWorker.register("/sw.js")
-    .then(() => console.log("SW registrado"))
-    .catch(err => console.log("Error SW:", err));
+navigator.serviceWorker.register("sw.js")
+.then(() => console.log("SW registrado"))
+.catch(err => console.log("Error SW:", err));
 }
 </script>
 
