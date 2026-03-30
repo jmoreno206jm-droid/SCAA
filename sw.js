@@ -1,40 +1,37 @@
-const CACHE_NAME = "asistencia-v1";
+const CACHE_NAME = "adecco-asistencia-v1";
 
 const urlsToCache = [
-  "/SCAA/",
-  "/SCAA/index.html",
-  "/SCAA/manifest.json",
-  "/SCAA/icon-192.png",
-  "/SCAA/icon-512.png"
+  "./",
+  "./index.html",
+  "./manifest.json",
+  "https://unpkg.com/html5-qrcode"
 ];
 
+// INSTALAR
 self.addEventListener("install", e => {
   e.waitUntil(
-    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
+    caches.open(CACHE_NAME)
+      .then(cache => cache.addAll(urlsToCache))
   );
 });
 
+// ACTIVAR
 self.addEventListener("activate", e => {
   e.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.map(k => k !== CACHE_NAME && caches.delete(k)))
+      Promise.all(
+        keys.map(k => {
+          if (k !== CACHE_NAME) return caches.delete(k);
+        })
+      )
     )
   );
 });
 
+// FETCH (CACHE FIRST)
 self.addEventListener("fetch", e => {
-
-  // NO tocar la API
-  if (e.request.url.includes("script.google.com")) return;
-
   e.respondWith(
-    caches.match(e.request).then(res => {
-      return res || fetch(e.request).then(resp => {
-        return caches.open(CACHE_NAME).then(cache => {
-          cache.put(e.request, resp.clone());
-          return resp;
-        });
-      });
-    }).catch(() => new Response("Sin conexión"))
+    caches.match(e.request)
+      .then(res => res || fetch(e.request))
   );
 });
