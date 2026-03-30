@@ -1,11 +1,11 @@
 const CACHE_NAME = "asistencia-v1";
 
 const urlsToCache = [
-  "/",
-  "/index.html",
-  "/manifest.json",
-  "/icon-192.png",
-  "/icon-512.png"
+  "/SCAA/",
+  "/SCAA/index.html",
+  "/SCAA/manifest.json",
+  "/SCAA/icon-192.png",
+  "/SCAA/icon-512.png"
 ];
 
 self.addEventListener("install", e => {
