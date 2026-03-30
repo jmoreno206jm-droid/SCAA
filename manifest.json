@@ -1,25 +1,20 @@
 {
   "name": "Asistencia RRHH",
-  "short_name": "RRHH",
-  "start_url": "/SCAA/index.html",
-  "scope": "/SCAA/",
+  "short_name": "Asistencia",
+  "start_url": "/index.html",
   "display": "standalone",
-  "orientation": "portrait",
   "background_color": "#ffffff",
   "theme_color": "#E4002B",
-  "description": "Sistema de control de asistencia con QR",
   "icons": [
     {
-      "src": "/SCAA/icon-192.png",
+      "src": "icon-192.png",
       "sizes": "192x192",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     },
     {
-      "src": "/SCAA/icon-512.png",
+      "src": "icon-512.png",
       "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "any maskable"
+      "type": "image/png"
     }
   ]
 }
