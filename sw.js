@@ -1,14 +1,17 @@
-const CACHE_NAME = "adecco-asistencia-v1";
+const CACHE_NAME = "adecco-asistencia-v2";
 
 const urlsToCache = [
   "./",
   "./index.html",
   "./manifest.json",
-  "https://unpkg.com/html5-qrcode"
+  "./icon-192.png",
+  "./icon-512.png",
+  "./js/html5-qrcode.min.js"
 ];
 
 // INSTALAR
 self.addEventListener("install", e => {
+  self.skipWaiting();
   e.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => cache.addAll(urlsToCache))
@@ -17,6 +20,7 @@ self.addEventListener("install", e => {
 
 // ACTIVAR
 self.addEventListener("activate", e => {
+  self.clients.claim();
   e.waitUntil(
     caches.keys().then(keys =>
       Promise.all(
@@ -28,10 +32,17 @@ self.addEventListener("activate", e => {
   );
 });
 
-// FETCH (CACHE FIRST)
+// FETCH (CACHE DINÁMICO)
 self.addEventListener("fetch", e => {
   e.respondWith(
     caches.match(e.request)
-      .then(res => res || fetch(e.request))
+      .then(res => {
+        return res || fetch(e.request).then(response => {
+          return caches.open(CACHE_NAME).then(cache => {
+            cache.put(e.request, response.clone());
+            return response;
+          });
+        });
+      })
   );
 });
