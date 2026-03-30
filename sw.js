@@ -1,26 +1,25 @@
-const CACHE_NAME = "rrhh-v2";
+const CACHE_NAME = "rrhh-cache-v3";
 
 const urlsToCache = [
-  "./",
-  "./index.html",
-  "./manifest.json",
-  "./icono-192.png",
-  "./icono-512.png",
+  "/SCAA/",
+  "/SCAA/index.html",
+  "/SCAA/manifest.json",
+  "/SCAA/icon-192.png",
+  "/SCAA/icon-512.png",
   "https://unpkg.com/html5-qrcode"
 ];
 
-// INSTALACIÓN
+// INSTALAR
 self.addEventListener("install", event => {
   event.waitUntil(
-    caches.open(CACHE_NAME)
-      .then(cache => {
-        return cache.addAll(urlsToCache);
-      })
+    caches.open(CACHE_NAME).then(cache => {
+      return cache.addAll(urlsToCache);
+    })
   );
   self.skipWaiting();
 });
 
-// ACTIVACIÓN
+// ACTIVAR
 self.addEventListener("activate", event => {
   event.waitUntil(
     caches.keys().then(keys => {
@@ -36,14 +35,13 @@ self.addEventListener("activate", event => {
   self.clients.claim();
 });
 
-// FETCH (modo híbrido: cache + red)
+// FETCH (cache + red + fallback)
 self.addEventListener("fetch", event => {
   event.respondWith(
     caches.match(event.request).then(response => {
       return response || fetch(event.request).catch(() => {
-        // fallback básico offline
         if (event.request.mode === "navigate") {
-          return caches.match("./index.html");
+          return caches.match("/SCAA/index.html");
         }
       });
     })
