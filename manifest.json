@@ -2,6 +2,7 @@
   "name": "Asistencia ADECCO",
   "short_name": "Asistencia",
   "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#ECEFF1",
   "theme_color": "#E4002B",
