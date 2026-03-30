@@ -1,8 +1,8 @@
 {
   "name": "Asistencia RRHH",
   "short_name": "RRHH",
-  "start_url": "./index.html",
-  "scope": "./",
+  "start_url": "/SCAA/index.html",
+  "scope": "/SCAA/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#ffffff",
@@ -10,13 +10,13 @@
   "description": "Sistema de control de asistencia con QR",
   "icons": [
     {
-      "src": "icono-192.png",
+      "src": "/SCAA/icon-192.png",
       "sizes": "192x192",
       "type": "image/png",
       "purpose": "any maskable"
     },
     {
-      "src": "icono-512.png",
+      "src": "/SCAA/icon-512.png",
       "sizes": "512x512",
       "type": "image/png",
       "purpose": "any maskable"
