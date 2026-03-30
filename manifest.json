@@ -1,10 +1,11 @@
 {
-  "name": "Asistencia RRHH",
+  "name": "Asistencia ADECCO",
   "short_name": "Asistencia",
-  "start_url": "/SCAA/index.html",
+  "start_url": "./index.html",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#ECEFF1",
   "theme_color": "#E4002B",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "icon-192.png",
