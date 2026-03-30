@@ -1,49 +1,40 @@
-const CACHE_NAME = "rrhh-cache-v3";
+const CACHE_NAME = "asistencia-v1";
 
 const urlsToCache = [
-  "/SCAA/",
-  "/SCAA/index.html",
-  "/SCAA/manifest.json",
-  "/SCAA/icon-192.png",
-  "/SCAA/icon-512.png",
-  "https://unpkg.com/html5-qrcode"
+  "/",
+  "/index.html",
+  "/manifest.json",
+  "/icon-192.png",
+  "/icon-512.png"
 ];
 
-// INSTALAR
-self.addEventListener("install", event => {
-  event.waitUntil(
-    caches.open(CACHE_NAME).then(cache => {
-      return cache.addAll(urlsToCache);
-    })
+self.addEventListener("install", e => {
+  e.waitUntil(
+    caches.open(CACHE_NAME).then(cache => cache.addAll(urlsToCache))
   );
-  self.skipWaiting();
 });
 
-// ACTIVAR
-self.addEventListener("activate", event => {
-  event.waitUntil(
-    caches.keys().then(keys => {
-      return Promise.all(
-        keys.map(key => {
-          if (key !== CACHE_NAME) {
-            return caches.delete(key);
-          }
-        })
-      );
-    })
+self.addEventListener("activate", e => {
+  e.waitUntil(
+    caches.keys().then(keys =>
+      Promise.all(keys.map(k => k !== CACHE_NAME && caches.delete(k)))
+    )
   );
-  self.clients.claim();
 });
 
-// FETCH (cache + red + fallback)
-self.addEventListener("fetch", event => {
-  event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request).catch(() => {
-        if (event.request.mode === "navigate") {
-          return caches.match("/SCAA/index.html");
-        }
+self.addEventListener("fetch", e => {
+
+  // NO tocar la API
+  if (e.request.url.includes("script.google.com")) return;
+
+  e.respondWith(
+    caches.match(e.request).then(res => {
+      return res || fetch(e.request).then(resp => {
+        return caches.open(CACHE_NAME).then(cache => {
+          cache.put(e.request, resp.clone());
+          return resp;
+        });
       });
-    })
+    }).catch(() => new Response("Sin conexión"))
   );
 });
