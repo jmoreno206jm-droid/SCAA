@@ -149,13 +149,27 @@ const QR_VALIDO="RRHH_ASISTENCIA_OK";
 
 let trabajador={},tipoActual="",qr=null,bloqueado=false;
 
+/* ✅ NUEVO: DEVICE ID */
+function getDeviceId(){
+  let id = localStorage.getItem("device_id");
+  if(!id){
+    id = crypto.randomUUID();
+    localStorage.setItem("device_id", id);
+  }
+  return id;
+}
+
 function buscar(){
 if(dni.value.length!==8)return;
 loader.style.display="flex";
 
 fetch(API_URL,{
 method:"POST",
-body:new URLSearchParams({action:"buscar",dni:dni.value})
+body:new URLSearchParams({
+  action:"buscar",
+  dni:dni.value,
+  deviceId:getDeviceId()
+})
 })
 .then(r=>r.json())
 .then(r=>{
@@ -205,7 +219,8 @@ cargo:trabajador.cargo,
 tipo:tipoActual,
 lat:p.coords.latitude,
 lng:p.coords.longitude,
-qr:QR_VALIDO
+qr:QR_VALIDO,
+deviceId:getDeviceId()
 })
 })
 .then(r=>r.json())
