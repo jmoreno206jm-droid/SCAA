@@ -1,7 +1,7 @@
 {
   "name": "Asistencia RRHH",
   "short_name": "Asistencia",
-  "start_url": "/index.html",
+  "start_url": "/SCAA/index.html",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#E4002B",
