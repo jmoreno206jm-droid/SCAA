@@ -7,7 +7,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="theme-color" content="#E4002B">
 
-<!-- PWA -->
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -16,7 +15,6 @@
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 <style>
-/* TODO TU CSS ORIGINAL SIN CAMBIOS */
 :root{
 --adecco:#E4002B;
 --adecco-dark:#B30022;
@@ -162,8 +160,6 @@ animation:spin 1s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 #reader{width:230px}
-
-/* BOTON INSTALAR */
 #installBtn{
 margin-top:10px;
 background:#000;
@@ -177,7 +173,6 @@ display:none;
 
 <div id="loader"><div class="spinner"></div></div>
 
-<!-- CONFIRMACION -->
 <div id="confirmacion" class="modal">
 <div id="confirmBox" class="confirm">
 <div class="check">
@@ -189,7 +184,6 @@ display:none;
 </div>
 </div>
 
-<!-- QR -->
 <div id="qrModal" class="modal">
 <div class="card">
 <h3 id="tipoTitulo"></h3>
@@ -216,19 +210,32 @@ display:none;
 <button class="btn-exit" onclick="abrirQR('SALIDA')">SALIDA</button>
 </div>
 
-<!-- BOTON INSTALAR -->
 <button id="installBtn">Instalar App</button>
-
 </div>
 
 <script>
-/* ===== TU LOGICA ORIGINAL ===== */
-const API_URL="https://script.google.com/macros/s/AKfycbz2C6m96JXfrZVgzaLODWaPyt5Qg0WHKlsjUYnwF36ZZdi2n38Mq-3wI80qCYoOgnT_/exec";
+const API_URL="https://script.google.com/macros/s/AKfycbxDcous7EFIR-tIDk4mtUwQ4sdGZXAG2y2rCcQbad-SoyWrpiazuRdtdkOsSuW2X7Zs/exec";
 const QR_VALIDO="RRHH_ASISTENCIA_OK";
 let trabajador={},tipoActual="",qr=null,bloqueado=false;
 
 const deviceId=localStorage.getItem("DEVICE_ID")||crypto.randomUUID();
 localStorage.setItem("DEVICE_ID",deviceId);
+
+/* ===== VOZ ===== */
+function hablar(texto){
+    const mensaje = new SpeechSynthesisUtterance(texto);
+    mensaje.lang = "es-ES";
+    mensaje.rate = 0.95;
+    mensaje.pitch = 1;
+    mensaje.volume = 1;
+
+    const voces = speechSynthesis.getVoices();
+    const vozEspanol = voces.find(v => v.lang.includes("es"));
+    if(vozEspanol) mensaje.voice = vozEspanol;
+
+    speechSynthesis.cancel();
+    speechSynthesis.speak(mensaje);
+}
 
 function buscar(){
 if(dni.value.length!==8)return;
@@ -237,7 +244,7 @@ loader.style.display="flex";
 fetch(API_URL,{method:"POST",body:new URLSearchParams({action:"buscar",dni:dni.value})})
 .then(r=>r.json())
 .then(r=>{
-if(!r.ok)return mostrarError(r.mensaje);
+if(!r.ok)return alert(r.mensaje);
 
 trabajador=r.data;
 p1.style.display="none";
@@ -301,6 +308,33 @@ function mostrarConfirmacion(tipo,msg){
 confirmBox.className="confirm "+(tipo==="ENTRADA"?"entrada":"salida");
 badgeTexto.innerText=msg;
 confirmacion.style.display="flex";
+
+let texto = msg.toLowerCase();
+let textoVoz = "";
+
+// 🚫 VALIDACIONES
+if(texto.includes("entrada") && texto.includes("ya registr")){
+    textoVoz = "Atención. Ya registró entrada hoy";
+
+} else if(texto.includes("salida") && texto.includes("ya registr")){
+    textoVoz = "Atención. Ya registró salida hoy";
+
+} else if(texto.includes("salida del día anterior") || texto.includes("salida del dia anterior")){
+    textoVoz = "Atención. Debe registrar la salida del día anterior";
+
+} else {
+
+    // ✅ CONFIRMACIONES NORMALES
+    if(tipo==="ENTRADA"){
+        textoVoz = "Entrada registrada correctamente";
+    }else{
+        textoVoz = "Salida registrada correctamente";
+    }
+
+}
+
+// 🔊 VOZ
+hablar(textoVoz);
 }
 
 function actualizarReloj(){
@@ -310,31 +344,11 @@ fecha.innerText=f.toLocaleDateString("es-PE",{weekday:"long",day:"numeric",month
 }
 setInterval(actualizarReloj,1000);
 actualizarReloj();
-
-/* ===== INSTALL PROMPT ===== */
-let deferredPrompt;
-
-window.addEventListener("beforeinstallprompt",(e)=>{
-e.preventDefault();
-deferredPrompt=e;
-installBtn.style.display="block";
-});
-
-installBtn.addEventListener("click",()=>{
-installBtn.style.display="none";
-deferredPrompt.prompt();
-deferredPrompt.userChoice.then(()=>{
-deferredPrompt=null;
-});
-});
 </script>
 
-<!-- SERVICE WORKER -->
 <script>
 if ("serviceWorker" in navigator) {
-navigator.serviceWorker.register("sw.js")
-.then(() => console.log("SW registrado"))
-.catch(err => console.log("Error SW:", err));
+navigator.serviceWorker.register("sw.js");
 }
 </script>
 
