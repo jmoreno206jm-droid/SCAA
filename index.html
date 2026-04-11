@@ -249,9 +249,12 @@ setTimeout(() => {
 
 // 🔥 ACTIVAR EN CLICK
 document.addEventListener("click", () => {
+    if (speechSynthesis.paused || speechSynthesis.speaking) {
+        speechSynthesis.resume();
+    }
     activarVoz();
     cargarVoces();
-});
+}, { once: true });
 
 function hablar(texto){
     if (!texto) return;
