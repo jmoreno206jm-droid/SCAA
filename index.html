@@ -242,30 +242,33 @@ function cargarVoces() {
 
 speechSynthesis.onvoiceschanged = cargarVoces;
 
+// 🔥 FORZAR CARGA
+setTimeout(() => {
+    cargarVoces();
+}, 500);
+
+// 🔥 ACTIVAR EN CLICK
+document.addEventListener("click", () => {
+    activarVoz();
+    cargarVoces();
+});
+
 function hablar(texto){
     if (!texto) return;
 
-    if (speechSynthesis.paused) {
-        speechSynthesis.resume();
-    }
-
     const mensaje = new SpeechSynthesisUtterance(texto);
+
     mensaje.lang = "es-PE";
     mensaje.rate = 0.95;
-    mensaje.pitch = 1;
-    mensaje.volume = 1;
 
     if (vozActiva) mensaje.voice = vozActiva;
 
     speechSynthesis.cancel();
 
-    setTimeout(() => {
+    setTimeout(()=>{
         speechSynthesis.speak(mensaje);
-    }, 100);
+    },100);
 }
-
-/* ACTIVAR VOZ EN PRIMER TOQUE */
-document.addEventListener("click", activarVoz, { once: true });
 
 /* ===== RESTO DE TU LÓGICA (SIN CAMBIOS) ===== */
 
