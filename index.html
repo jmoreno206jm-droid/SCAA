@@ -15,6 +15,7 @@
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 <style>
+/* (TODO TU CSS ORIGINAL SIN CAMBIOS) */
 :root{
 --adecco:#E4002B;
 --adecco-dark:#B30022;
@@ -214,28 +215,59 @@ display:none;
 </div>
 
 <script>
-const API_URL="https://script.google.com/macros/s/AKfycbxDcous7EFIR-tIDk4mtUwQ4sdGZXAG2y2rCcQbad-SoyWrpiazuRdtdkOsSuW2X7Zs/exec";
+const API_URL="https://script.google.com/macros/s/AKfycbyChCepZDsskMHQyiA9gEv1bfgi8CCmtTLjexe033l2XR3pbygixgBbJYBZJ5QM44z8/exec";
 const QR_VALIDO="RRHH_ASISTENCIA_OK";
 let trabajador={},tipoActual="",qr=null,bloqueado=false;
 
 const deviceId=localStorage.getItem("DEVICE_ID")||crypto.randomUUID();
 localStorage.setItem("DEVICE_ID",deviceId);
 
-/* ===== VOZ ===== */
+/* ===== 🔊 VOZ MEJORADA PARA CELULARES ===== */
+let vozLista = [];
+let vozActiva = null;
+
+function activarVoz() {
+    const temp = new SpeechSynthesisUtterance("");
+    speechSynthesis.speak(temp);
+}
+
+function cargarVoces() {
+    vozLista = speechSynthesis.getVoices();
+    if (!vozLista.length) return;
+
+    vozActiva = vozLista.find(v => v.lang.includes("es")) 
+              || vozLista.find(v => v.lang.includes("en")) 
+              || vozLista[0];
+}
+
+speechSynthesis.onvoiceschanged = cargarVoces;
+
 function hablar(texto){
+    if (!texto) return;
+
+    if (speechSynthesis.paused) {
+        speechSynthesis.resume();
+    }
+
     const mensaje = new SpeechSynthesisUtterance(texto);
-    mensaje.lang = "es-ES";
+    mensaje.lang = "es-PE";
     mensaje.rate = 0.95;
     mensaje.pitch = 1;
     mensaje.volume = 1;
 
-    const voces = speechSynthesis.getVoices();
-    const vozEspanol = voces.find(v => v.lang.includes("es"));
-    if(vozEspanol) mensaje.voice = vozEspanol;
+    if (vozActiva) mensaje.voice = vozActiva;
 
     speechSynthesis.cancel();
-    speechSynthesis.speak(mensaje);
+
+    setTimeout(() => {
+        speechSynthesis.speak(mensaje);
+    }, 100);
 }
+
+/* ACTIVAR VOZ EN PRIMER TOQUE */
+document.addEventListener("click", activarVoz, { once: true });
+
+/* ===== RESTO DE TU LÓGICA (SIN CAMBIOS) ===== */
 
 function buscar(){
 if(dni.value.length!==8)return;
@@ -312,28 +344,26 @@ confirmacion.style.display="flex";
 let texto = msg.toLowerCase();
 let textoVoz = "";
 
-// 🚫 VALIDACIONES
 if(texto.includes("entrada") && texto.includes("ya registr")){
     textoVoz = "Atención. Ya registró entrada hoy";
-
-} else if(texto.includes("salida") && texto.includes("ya registr")){
+}
+else if(texto.includes("salida") && texto.includes("ya registr")){
     textoVoz = "Atención. Ya registró salida hoy";
-
-} else if(texto.includes("salida del día anterior") || texto.includes("salida del dia anterior")){
+}
+else if(texto.includes("salida del día anterior") || texto.includes("salida del dia anterior")){
     textoVoz = "Atención. Debe registrar la salida del día anterior";
-
-} else {
-
-    // ✅ CONFIRMACIONES NORMALES
+}
+else if(texto.includes("entrada primero")){   // 👈 AQUÍ VA
+    textoVoz = "Debe registrar entrada primero";
+}
+else{
     if(tipo==="ENTRADA"){
         textoVoz = "Entrada registrada correctamente";
     }else{
         textoVoz = "Salida registrada correctamente";
     }
-
 }
 
-// 🔊 VOZ
 hablar(textoVoz);
 }
 
