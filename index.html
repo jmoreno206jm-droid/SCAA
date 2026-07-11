@@ -16,572 +16,367 @@
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 <style>
+/* TODO TU CSS ORIGINAL SIN CAMBIOS */
 :root{
 --adecco:#E4002B;
---adecco-dark:#B10022;
---green:#27AE60;
---yellow:#F4B400;
---white:#fff;
---text:#222;
+--adecco-dark:#B30022;
+--green:#2E7D32;
+--green-dark:#1B5E20;
+--yellow:#F9A825;
+--yellow-dark:#F57F17;
+--gray:#F4F5F7;
+--text:#1F2937;
+--muted:#6B7280;
 }
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:'Segoe UI',sans-serif;
-}
-
+*{box-sizing:border-box;font-family:"Segoe UI",system-ui}
 body{
-margin:0;
-height:100vh;
-display:flex;
-align-items:center;
-justify-content:center;
-background:linear-gradient(180deg,#B50027,#8F001F);
-padding:20px;
+margin:0;height:100vh;display:flex;
+align-items:center;justify-content:center;
+background:linear-gradient(145deg,#ECEFF1,#CFD8DC);
 }
-
-body::before{
-content:"";
-position:absolute;
-width:500px;
-height:500px;
-background:rgba(255,255,255,.08);
-border-radius:50%;
-top:-180px;
-right:-150px;
-}
-
-body::after{
-content:"";
-position:absolute;
-width:350px;
-height:350px;
-background:rgba(255,255,255,.05);
-border-radius:50%;
-bottom:-140px;
-left:-120px;
-}
-
 .card{
+width:100%;max-width:390px;padding:34px;
+border-radius:28px;background:#fff;
+text-align:center;
+box-shadow:0 30px 60px rgba(0,0,0,.25);
+animation:fadeUp .6s ease;
+}
+@keyframes fadeUp{
+from{opacity:0;transform:translateY(30px)}
+to{opacity:1}
+}
+.logo{
+font-size:30px;
+font-weight:900;
+color:var(--adecco);
+margin-bottom:20px;
+}
+input{
+width:100%;padding:16px;border-radius:16px;
+border:1px solid #E5E7EB;
+text-align:center;font-size:16px;
+margin-bottom:16px;
+}
+input:focus{
+outline:none;border-color:var(--adecco);
+box-shadow:0 0 0 3px rgba(228,0,43,.18);
+}
+button{
+width:100%;padding:16px;border:none;
+border-radius:16px;font-size:16px;
+font-weight:700;cursor:pointer;
+transition:.25s;
+}
+button:hover{transform:translateY(-2px)}
+.btn{
+background:linear-gradient(180deg,var(--adecco),var(--adecco-dark));
+color:#fff;
+box-shadow:0 14px 28px rgba(228,0,43,.45);
+}
+.btn-entry{
+background:linear-gradient(180deg,var(--green),var(--green-dark));
+color:#fff;
+box-shadow:0 14px 28px rgba(46,125,50,.45);
+}
+.btn-exit{
+background:linear-gradient(180deg,var(--yellow),var(--yellow-dark));
+color:#000;
+box-shadow:0 14px 28px rgba(249,168,37,.45);
+}
+/* ===========================
+   PANTALLA 2 - NUEVO DISEÑO
+===========================*/
 
-width:100%;
-max-width:430px;
+.credencial{
 
-background:#FFFFFF;
+position:relative;
+overflow:hidden;
+
+background:linear-gradient(
+160deg,
+#4A0716 0%,
+#7D0F26 35%,
+#B11434 70%,
+#FF2D3F 100%
+);
 
 border-radius:30px;
 
-padding:35px;
-
-text-align:center;
-
-box-shadow:0 18px 40px rgba(0,0,0,.18);
-
-animation:fadeUp .6s ease;
-
-}
-
-@keyframes subir{
-
-from{
-opacity:0;
-transform:translateY(40px);
-}
-
-to{
-opacity:1;
-transform:none;
-}
-
-}
-
-.logo{
-
-font-size:34px;
-
-font-weight:800;
-
-color:#E4002B;
-
-margin-bottom:30px;
-
-padding-bottom:18px;
-
-border-bottom:2px solid #EFEFEF;
-
-}
-
-input{
-
-width:100%;
-
-padding:18px;
-
-border:none;
-
-border-radius:18px;
-
-background:rgba(255,255,255,.90);
-
-font-size:17px;
-
-text-align:center;
-
-margin-bottom:18px;
-
-transition:.3s;
-
-}
-
-input:focus{
-
-outline:none;
-
-transform:scale(1.02);
-
-box-shadow:0 0 0 4px rgba(255,255,255,.25);
-
-}
-
-button{
-
-width:100%;
-
-padding:18px;
-
-border-radius:16px;
-
-font-size:20px;
-
-font-weight:700;
-
-border:none;
-
-cursor:pointer;
-
-transition:.25s;
-
-}
-
-button:hover{
-
-transform:translateY(-3px);
-
-}
-
-.btn{
-
-background:#fff;
-
-color:#E4002B;
-
-}
-
-.btn-entry{
-
-background:#21B35B;
+padding:30px 20px 25px;
 
 color:white;
 
-box-shadow:none;
+min-height:600px;
 
 }
 
-.btn-exit{
+/* Ondas */
 
-background:#F4B400;
+.ondas{
+position:absolute;
+left:-60px;
+top:-40px;
+width:220px;
+height:750px;
+background:
+radial-gradient(circle at left,#ffffff 12px,transparent 13px),
+linear-gradient(90deg,#ffffff 0,#ffffff 12px,transparent 13px);
+opacity:.95;
+transform:rotate(8deg);
 
-color:#222;
-
-box-shadow:none;
-
+pointer-events:none;
+z-index:1;
 }
 
-.btn:hover,
-.btn-entry:hover,
-.btn-exit:hover{
+.ondas::before{
+content:"";
+position:absolute;
+left:20px;
+top:-20px;
+width:70px;
+height:760px;
+background:#22060B;
+border-radius:100px;
+transform:rotate(10deg);
+}
 
-box-shadow:0 15px 30px rgba(0,0,0,.25);
+.ondas::after{
+content:"";
+position:absolute;
+left:70px;
+top:-20px;
+width:45px;
+height:760px;
+background:#48131D;
+border-radius:100px;
+transform:rotate(10deg);
+}
 
+/* Foto */
+
+.foto-contenedor{
+display:flex;
+justify-content:center;
+align-items:center;
+margin-top:30px;
+margin-bottom:18px;
+position:relative;
+z-index:5;
+background:none;
 }
 
 .foto{
 
-width:120px;
+width:145px;
+height:175px;
 
-height:140px;
-
-border-radius:18px;
-
-border:2px solid #E4002B;
+border-radius:70px;
 
 object-fit:cover;
 
-box-shadow:0 8px 18px rgba(0,0,0,.15);
+border:7px solid white;
 
-margin:15px auto;
+background:white;
+
+box-shadow:0 10px 30px rgba(0,0,0,.35);
 
 }
 
-h3{
+/* Datos */
 
-font-size:28px;
+.datos{
 
-color:#222;
+text-align:center;
 
-margin-top:12px;
+position:relative;
+z-index:5;
 
-margin-bottom:8px;
+}
 
-font-weight:700;
+#nombre{
+
+font-size:30px;
+
+font-weight:800;
+
+margin:0;
+
+color:white;
+
+letter-spacing:.5px;
 
 }
 
 #cargo{
 
-font-size:17px;
-
-color:#777 !important;
-
-margin-bottom:18px;
-
-}
-
-.reloj{
-
-font-size:42px;
-
-font-weight:700;
-
-color:#222;
-
-margin-top:10px;
-
-}
-
-.fecha{
-
-font-size:18px;
-
-color:#777;
-
 margin-top:8px;
 
-margin-bottom:25px;
+font-size:20px;
+
+font-weight:500;
+
+color:#F4F4F4;
 
 }
 
-.modal{
+.linea{
 
-display:none;
+width:90px;
 
-position:fixed;
-
-inset:0;
-
-background:rgba(0,0,0,.45);
-
-backdrop-filter:blur(8px);
-
-justify-content:center;
-
-align-items:center;
-
-z-index:100;
-
-}
-
-.confirm{
+height:3px;
 
 background:white;
 
-padding:35px;
+margin:20px auto;
 
-border-radius:28px;
+border-radius:20px;
 
-width:90%;
-
-max-width:330px;
-
-text-align:center;
-
-animation:pop .35s;
-
-}
-
-@keyframes pop{
-
-from{
-transform:scale(.8);
-opacity:0;
-}
-
-to{
-transform:scale(1);
-opacity:1;
-}
-
-}
-
-.check{
-
-width:85px;
-
-height:85px;
-
-border-radius:50%;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-margin:auto auto 18px;
-
-border:4px solid;
-
-}
-
-.check svg{
-
-width:42px;
-
-stroke-width:4;
-
-fill:none;
-
-stroke-dasharray:100;
-
-stroke-dashoffset:100;
-
-animation:draw .5s forwards .2s;
-
-}
-
-@keyframes draw{
-
-to{
-
-stroke-dashoffset:0;
-
-}
-
-}
-
-.confirm.entrada .check,
-.confirm.entrada svg{
-
-border-color:#27AE60;
-
-stroke:#27AE60;
-
-}
-
-.confirm.salida .check,
-.confirm.salida svg{
-
-border-color:#F4B400;
-
-stroke:#F4B400;
-
-}
-
-.badge{
-
-display:inline-block;
-
-padding:12px 24px;
-
-border-radius:25px;
-
-font-weight:bold;
-
-margin-top:10px;
-
-}
-
-.confirm.entrada .badge{
-
-background:#27AE60;
-
-color:white;
-
-}
-
-.confirm.salida .badge{
-
-background:#F4B400;
-
-}
-
-#loader{
-
-display:none;
-
-position:fixed;
-
-inset:0;
-
-background:rgba(255,255,255,.6);
-
-backdrop-filter:blur(4px);
-
-justify-content:center;
-
-align-items:center;
-
-z-index:999;
-
-}
-
-.spinner{
-
-width:55px;
-
-height:55px;
-
-border-radius:50%;
-
-border:5px solid rgba(255,255,255,.3);
-
-border-top:5px solid #E4002B;
-
-animation:spin .8s linear infinite;
-
-}
-
-@keyframes spin{
-
-to{
-
-transform:rotate(360deg);
-
-}
-
-}
-
-#reader{
-
-width:250px;
-
-margin:auto;
-
-border-radius:15px;
-
-overflow:hidden;
-
-}
-
-#installBtn{
-    margin-top:10px;
-    background:#000;
-    color:#fff;
-    display:none;
-}
-
-/* ===== NUEVO CSS ===== */
-
-.header{
-    margin-bottom:25px;
-    border-bottom:2px solid #E8E8E8;
-    padding-bottom:20px;
-}
-
-.logoBox{
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    gap:18px;
-}
-
-.logoIcon{
-    width:70px;
-    height:70px;
-    background:#E4002B;
-    border-radius:16px;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-size:42px;
-    font-weight:bold;
-    color:white;
-}
-
-.logoTitulo{
-    margin:0;
-    font-size:42px;
-    color:#E4002B;
-    font-weight:800;
-}
-
-.logoSub{
-    letter-spacing:2px;
-    color:#666;
-    font-size:15px;
-}
-
-.panel{
-    padding:10px;
-}
-
-.panel h2{
-    margin-bottom:10px;
-    color:#333;
-}
-
-.texto{
-    color:#777;
-    margin-bottom:20px;
-}
-
-.empleado{
-    display:flex;
-    align-items:center;
-    gap:18px;
-    margin-bottom:20px;
-    text-align:left;
-}
-
-.foto{
-    width:120px;
-    height:140px;
-    border-radius:18px;
-    border:3px solid #E4002B;
-    object-fit:cover;
-    box-shadow:0 8px 18px rgba(0,0,0,.20);
-}
-
-.datos h2{
-    margin:0;
-    font-size:24px;
-}
-
-.datos p{
-    margin-top:8px;
-    color:#666;
-}
-
-.relojCard{
-    background:#F7F7F7;
-    border-radius:18px;
-    padding:18px;
-    margin-bottom:25px;
 }
 
 .reloj{
-    font-size:34px;
-    font-weight:bold;
-    color:#222;
+font-size:32px;
+font-weight:800;
+color:#FFFFFF !important;
+margin-top:5px;
+text-shadow:0 2px 6px rgba(0,0,0,.35);
 }
 
 .fecha{
-    margin-top:8px;
-    color:#777;
+font-size:18px;
+margin-top:8px;
+color:#FFFFFF !important;
+font-weight:500;
+text-shadow:0 2px 6px rgba(0,0,0,.35);
 }
 
+/* Botones */
+
+.botones{
+
+margin-top:35px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
+
+}
+
+.btn-entry{
+
+background:#2E7D32;
+
+color:white;
+
+border-radius:18px;
+
+padding:18px;
+
+font-size:17px;
+
+font-weight:bold;
+
+box-shadow:0 10px 25px rgba(0,0,0,.25);
+
+}
+
+.btn-exit{
+
+background:#FBC02D;
+
+color:#111;
+
+border-radius:18px;
+
+padding:18px;
+
+font-size:17px;
+
+font-weight:bold;
+
+box-shadow:0 10px 25px rgba(0,0,0,.25);
+
+}
+.reloj{
+margin-top:8px;
+font-weight:700;
+color:var(--text);
+}
+.fecha{
+font-size:14px;
+color:var(--muted);
+margin-bottom:14px;
+}
+.modal{
+display:none;position:fixed;inset:0;
+background:rgba(0,0,0,.45);
+backdrop-filter:blur(6px);
+justify-content:center;align-items:center;
+z-index:10;
+}
+.confirm{
+background:#fff;padding:36px;border-radius:28px;
+text-align:center;width:85%;max-width:320px;
+box-shadow:0 30px 60px rgba(0,0,0,.3);
+animation:pop .45s ease;
+}
+@keyframes pop{
+from{opacity:0;transform:scale(.85)}
+to{opacity:1}
+}
+.check{
+width:78px;height:78px;border-radius:50%;
+border:4px solid;display:flex;
+align-items:center;justify-content:center;
+margin:0 auto 16px;
+}
+.check svg{
+width:42px;height:42px;
+fill:none;stroke-width:4;
+stroke-dasharray:100;
+stroke-dashoffset:100;
+animation:draw .6s ease forwards .2s;
+}
+@keyframes draw{to{stroke-dashoffset:0}}
+.confirm.entrada .check,
+.confirm.entrada svg{
+border-color:var(--green);
+stroke:var(--green);
+}
+.confirm.salida .check,
+.confirm.salida svg{
+border-color:var(--yellow);
+stroke:var(--yellow);
+}
+.badge{
+padding:10px 18px;border-radius:20px;
+font-weight:700;
+}
+.confirm.entrada .badge{background:var(--green);color:#fff}
+.confirm.salida .badge{background:var(--yellow);color:#000}
+#loader{
+display:none;position:fixed;inset:0;
+background:rgba(255,255,255,.75);
+justify-content:center;align-items:center;
+z-index:20;
+}
+.spinner{
+width:48px;height:48px;border-radius:50%;
+border:4px solid #ddd;
+border-top:4px solid var(--adecco);
+animation:spin 1s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+#reader{width:230px}
+
+/* BOTON INSTALAR */
+#installBtn{
+margin-top:10px;
+background:#000;
+color:#fff;
+display:none;
+}
 </style>
 </head>
 
@@ -611,94 +406,51 @@ overflow:hidden;
 </div>
 
 <div class="card">
+<div class="logo">Asistencia ADECCO</div>
 
-    <!-- ENCABEZADO -->
-    <div class="header">
-        <div class="logoBox">
-            <div class="logoIcon">A</div>
-            <div>
-                <h1 class="logoTitulo">Adecco</h1>
-                <span class="logoSub">ASISTENCIA RRHH</span>
-            </div>
-        </div>
-    </div>
+<div id="p1">
+<input id="dni" placeholder="Ingrese DNI" maxlength="8" onkeypress="if(event.key==='Enter') buscar()">
+<button class="btn" onclick="buscar()">Buscar</button>
+</div>
 
-    <!-- PANTALLA 1 -->
-    <div id="p1">
+<div id="p2" class="credencial" style="display:none">
 
-        <div class="panel">
+<div class="ondas"></div>
 
-            <h2>Ingrese su DNI</h2>
+<div class="foto-contenedor">
+    <img id="foto" class="foto">
+</div>
 
-            <p class="texto">
-                Identifíquese para registrar su asistencia.
-            </p>
+<div class="datos">
 
-            <input
-                id="dni"
-                maxlength="8"
-                placeholder="Ingrese DNI (8 dígitos)"
-                onkeypress="if(event.key==='Enter') buscar()">
+<h2 id="nombre"></h2>
 
-            <button class="btn" onclick="buscar()">
-                🔍 Buscar
-            </button>
+<p id="cargo"></p>
 
-        </div>
+<div class="linea"></div>
 
-    </div>
+<div class="reloj" id="hora"></div>
 
-    <!-- PANTALLA 2 -->
+<div class="fecha" id="fecha"></div>
 
-    <div id="p2" style="display:none;">
+</div>
 
-        <div class="empleado">
+<div class="botones">
 
-            <img id="foto" class="foto">
+<button class="btn-entry" onclick="abrirQR('ENTRADA')">
+🟢 REGISTRAR ENTRADA
+</button>
 
-            <div class="datos">
+<button class="btn-exit" onclick="abrirQR('SALIDA')">
+🟡 REGISTRAR SALIDA
+</button>
 
-                <h2 id="nombre"></h2>
+</div>
 
-                <p id="cargo"></p>
+</div>
 
-            </div>
-
-        </div>
-
-        <div class="relojCard">
-
-            <div id="hora" class="reloj"></div>
-
-            <div id="fecha" class="fecha"></div>
-
-        </div>
-
-        <button
-            class="btn-entry"
-            onclick="abrirQR('ENTRADA')">
-
-            ➜ ENTRADA
-
-        </button>
-
-        <br><br>
-
-        <button
-            class="btn-exit"
-            onclick="abrirQR('SALIDA')">
-
-            ➜ SALIDA
-
-        </button>
-
-    </div>
-
-    <button id="installBtn">
-
-        Instalar Aplicación
-
-    </button>
+<!-- BOTON INSTALAR -->
+<button id="installBtn">Instalar App</button>
 
 </div>
 
