@@ -30,16 +30,59 @@
 }
 *{box-sizing:border-box;font-family:"Segoe UI",system-ui}
 body{
-margin:0;height:100vh;display:flex;
-align-items:center;justify-content:center;
+margin:0;
+min-height:100dvh;
+display:flex;
+align-items:center;
+justify-content:center;
+padding:15px;
 background:linear-gradient(145deg,#ECEFF1,#CFD8DC);
 }
+
+@media(max-width:420px){
+
+body{
+padding:15px 10px;
+}
+
+.logo{
+font-size:24px;
+margin-bottom:15px;
+}
+
+.credencial{
+border-radius:24px;
+}
+
+.foto-contenedor{
+margin-top:15px;
+margin-bottom:10px;
+}
+
+.botones{
+margin-top:20px;
+gap:12px;
+}
+
+.reloj{
+font-size:26px;
+}
+
+.fecha{
+font-size:15px;
+}
+
+}
 .card{
-width:100%;max-width:390px;padding:34px;
-border-radius:28px;background:#fff;
+width:100%;
+max-width:400px;
+padding:24px;
+border-radius:28px;
+background:#fff;
 text-align:center;
 box-shadow:0 30px 60px rgba(0,0,0,.25);
 animation:fadeUp .6s ease;
+margin:auto;
 }
 @keyframes fadeUp{
 from{opacity:0;transform:translateY(30px)}
@@ -73,16 +116,6 @@ background:linear-gradient(180deg,var(--adecco),var(--adecco-dark));
 color:#fff;
 box-shadow:0 14px 28px rgba(228,0,43,.45);
 }
-.btn-entry{
-background:linear-gradient(180deg,var(--green),var(--green-dark));
-color:#fff;
-box-shadow:0 14px 28px rgba(46,125,50,.45);
-}
-.btn-exit{
-background:linear-gradient(180deg,var(--yellow),var(--yellow-dark));
-color:#000;
-box-shadow:0 14px 28px rgba(249,168,37,.45);
-}
 /* ===========================
    PANTALLA 2 - NUEVO DISEÑO
 ===========================*/
@@ -94,19 +127,18 @@ overflow:hidden;
 
 background:linear-gradient(
 160deg,
-#4A0716 0%,
-#7D0F26 35%,
-#B11434 70%,
-#FF2D3F 100%
+#52091A 0%,
+#8E1530 45%,
+#D72645 100%
 );
 
-border-radius:30px;
+border-radius:28px;
 
-padding:30px 20px 25px;
+padding:22px 18px;
 
 color:white;
 
-min-height:600px;
+min-height:auto;
 
 }
 
@@ -167,10 +199,10 @@ background:none;
 
 .foto{
 
-width:145px;
-height:175px;
+width:125px;
+height:150px;
 
-border-radius:70px;
+border-radius:22px;
 
 object-fit:cover;
 
@@ -195,7 +227,7 @@ z-index:5;
 
 #nombre{
 
-font-size:30px;
+font-size:24px;
 
 font-weight:800;
 
@@ -209,9 +241,9 @@ letter-spacing:.5px;
 
 #cargo{
 
-margin-top:8px;
+margin-top:6px;
 
-font-size:20px;
+font-size:17px;
 
 font-weight:500;
 
@@ -269,11 +301,11 @@ background:#2E7D32;
 
 color:white;
 
-border-radius:18px;
+border-radius:16px;
 
-padding:18px;
+padding:15px;
 
-font-size:17px;
+font-size:15px;
 
 font-weight:bold;
 
@@ -287,11 +319,11 @@ background:#FBC02D;
 
 color:#111;
 
-border-radius:18px;
+border-radius:16px;
 
-padding:18px;
+padding:15px;
 
-font-size:17px;
+font-size:15px;
 
 font-weight:bold;
 
@@ -376,7 +408,11 @@ border-top:4px solid var(--adecco);
 animation:spin 1s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-#reader{width:230px}
+#reader{
+width:100%;
+max-width:230px;
+margin:auto;
+}
 
 /* BOTON INSTALAR */
 #installBtn{
@@ -563,7 +599,7 @@ function registrar() {
 
 function mostrarConfirmacion(tipo, msg) {
     confirmBox.className = "confirm " + (tipo === "ENTRADA" ? "entrada" : "salida");
-    badgeTexto.innerText = msg;
+    document.getElementById("badgeTexto").innerText = msg;
     confirmacion.style.display = "flex";
 
     if ("speechSynthesis" in window) {
@@ -595,6 +631,7 @@ function mostrarError(mensaje){
     confirmBox.className="confirm error";
 
     confirmBox.innerHTML=`
+
         <div class="check">
             <svg viewBox="0 0 52 52">
                 <path d="M16 16 L36 36 M36 16 L16 36"/>
@@ -616,23 +653,30 @@ function mostrarError(mensaje){
         <button class="btn" onclick="cerrarMensaje()">
             ACEPTAR
         </button>
+
     `;
 
     confirmacion.style.display="flex";
 }
+
+
 function cerrarMensaje(){
 
     confirmacion.style.display="none";
 
+    confirmBox.className="confirm";
+
     confirmBox.innerHTML=`
+
         <div class="check">
             <svg viewBox="0 0 52 52">
                 <path d="M14 27 L23 36 L38 16"/>
             </svg>
         </div>
-        <div id="badgeTexto" class="badge"></div>
-    `;
 
+        <div id="badgeTexto" class="badge"></div>
+
+    `;
 }
 /* =========================== */
 
