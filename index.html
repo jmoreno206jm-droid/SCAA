@@ -605,16 +605,14 @@ function mostrarConfirmacion(tipo, msg) {
     if ("speechSynthesis" in window) {
         speechSynthesis.cancel();
 
-        let texto;
+        // Obtener solo el primer nombre
+        const primerNombre = trabajador.nombre.trim().split(" ")[0];
 
-        if (tipo === "ENTRADA") {
-            texto = `Bienvenido ${trabajador.nombre}. ${msg}`;
-        } else {
-            texto = `Hasta luego ${trabajador.nombre}. ${msg}`;
-        }
+        // Mensaje de voz
+        const texto = `${primerNombre}, ${tipo.toLowerCase()} registrada correctamente.`;
 
         const voz = new SpeechSynthesisUtterance(texto);
-        voz.lang = "es-PE";
+        voz.lang = "es-ES";
         voz.rate = 1;
         voz.pitch = 1;
         voz.volume = 1;
