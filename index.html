@@ -580,7 +580,7 @@ function registrar() {
                 }
 
                 mostrarConfirmacion(tipoActual,r.mensaje);
-                setTimeout(()=>location.reload(),2200);
+               
             })
             .catch(err=>{
                 loader.style.display="none";
@@ -602,26 +602,53 @@ function mostrarConfirmacion(tipo, msg) {
     document.getElementById("badgeTexto").innerText = msg;
     confirmacion.style.display = "flex";
 
-    if ("speechSynthesis" in window) {
+if ("speechSynthesis" in window) {
+
+    speechSynthesis.cancel();
+
+    const primerNombre = trabajador.nombre.trim().split(" ")[0];
+
+    const texto = `${primerNombre}, ${tipo.toLowerCase()} registrada correctamente.`;
+
+    const voz = new SpeechSynthesisUtterance(texto);
+
+    voz.lang="es-ES";
+    voz.rate=1;
+    voz.pitch=1;
+    voz.volume=1;
+
+    let recargado=false;
+
+    const volverInicio=()=>{
+        if(recargado)return;
+        recargado=true;
+
         speechSynthesis.cancel();
 
-        // Obtener solo el primer nombre
-        const primerNombre = trabajador.nombre.trim().split(" ")[0];
+        setTimeout(()=>{
+            location.reload();
+        },500);
+    };
 
-        // Mensaje de voz
-        const texto = `${primerNombre}, ${tipo.toLowerCase()} registrada correctamente.`;
+    voz.onend = volverInicio;
+voz.onerror = volverInicio;
 
-        const voz = new SpeechSynthesisUtterance(texto);
-        voz.lang = "es-ES";
-        voz.rate = 1;
-        voz.pitch = 1;
-        voz.volume = 1;
+speechSynthesis.speak(voz);
 
-        speechSynthesis.speak(voz);
-    }
+setTimeout(volverInicio, 5000);
+
+} else {
+
+    setTimeout(() => {
+        location.reload();
+    }, 2500);
+
 }
 
+} // ← Cierre de la función mostrarConfirmacion()
+
 /* ======= AGREGA ESTO ======= */
+
 function mostrarError(mensaje){
 
     loader.style.display="none";
@@ -655,6 +682,7 @@ function mostrarError(mensaje){
     `;
 
     confirmacion.style.display="flex";
+
 }
 
 
