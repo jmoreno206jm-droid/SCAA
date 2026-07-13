@@ -345,6 +345,24 @@ font-weight:700;
 }
 .confirm.entrada .badge{background:var(--green);color:#fff}
 .confirm.salida .badge{background:var(--yellow);color:#000}
+/* ERROR */
+
+.confirm.error .check{
+border-color:#E53935;
+}
+
+.confirm.error svg{
+stroke:#E53935;
+}
+
+.confirm.error .badge{
+background:#E53935;
+color:#fff;
+}
+
+.confirm.error button{
+margin-top:10px;
+}
 #loader{
 display:none;position:fixed;inset:0;
 background:rgba(255,255,255,.75);
@@ -571,8 +589,50 @@ function mostrarConfirmacion(tipo, msg) {
 
 /* ======= AGREGA ESTO ======= */
 function mostrarError(mensaje){
-    loader.style.display = "none";
-    alert(mensaje);
+
+    loader.style.display="none";
+
+    confirmBox.className="confirm error";
+
+    confirmBox.innerHTML=`
+        <div class="check">
+            <svg viewBox="0 0 52 52">
+                <path d="M16 16 L36 36 M36 16 L16 36"/>
+            </svg>
+        </div>
+
+        <div class="badge">
+            ERROR
+        </div>
+
+        <h3 style="margin:18px 0 10px;font-size:22px;">
+            Atención
+        </h3>
+
+        <p style="font-size:17px;margin-bottom:22px;">
+            ${mensaje}
+        </p>
+
+        <button class="btn" onclick="cerrarMensaje()">
+            ACEPTAR
+        </button>
+    `;
+
+    confirmacion.style.display="flex";
+}
+function cerrarMensaje(){
+
+    confirmacion.style.display="none";
+
+    confirmBox.innerHTML=`
+        <div class="check">
+            <svg viewBox="0 0 52 52">
+                <path d="M14 27 L23 36 L38 16"/>
+            </svg>
+        </div>
+        <div id="badgeTexto" class="badge"></div>
+    `;
+
 }
 /* =========================== */
 
