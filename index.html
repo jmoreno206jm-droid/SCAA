@@ -500,7 +500,7 @@ display:none;
 
 <script>
 /* ===== TU LOGICA ORIGINAL ===== */
-const API_URL="https://script.google.com/macros/s/AKfycbzH8GBCi52nNQMs-oZCHjXPTX-c0Q1YTepkQlhYhnnGfGozlip8fEL230Sz2g9ay5c3/exec";
+const API_URL="https://script.google.com/macros/s/AKfycbwzUvFqrLPvbU3naKzqnRmhGHIyTX1V3Rc-c3sEgg2guVz9JpoiVrbMsQ3GCwGXYth3/exec";
 const QR_VALIDO="RRHH_ASISTENCIA_OK";
 let trabajador={},tipoActual="",qr=null,bloqueado=false;
 
@@ -559,14 +559,22 @@ qr.start(
         bloqueado=true;
 
         qr.stop()
-        .then(()=>{
-            qrModal.style.display="none";
-            registrar();
-        })
-        .catch(()=>{
-            qrModal.style.display="none";
-            registrar();
-        });
+.then(()=>{
+    return qr.clear();
+})
+.catch(err=>{
+    console.log("Error limpiando QR:",err);
+})
+.finally(()=>{
+
+    qrModal.style.display="none";
+
+    const lector = qr;
+    qr=null;
+
+    registrar();
+
+});
 
     }
 )
@@ -579,19 +587,32 @@ qr.start(
 
 function cerrarQR(){
 
-qrModal.style.display="none";
+    qrModal.style.display="none";
 
-if(qr){
-    qr.stop().catch(()=>{});
-    qr=null;
-}
+    if(qr){
 
+        qr.stop()
+        .then(()=>{
+            return qr.clear();
+        })
+        .catch(err=>{
+            console.log("Error cerrando QR:",err);
+        })
+        .finally(()=>{
+            qr=null;
+        });
+
+    }
+
+    bloqueado=false;
 }
 
 function registrar() {
+
     loader.style.display = "flex";
 
     navigator.geolocation.getCurrentPosition(
+
         p => {
 
             fetch(API_URL,{
@@ -608,106 +629,136 @@ function registrar() {
                     qr:QR_VALIDO
                 })
             })
+
             .then(r => r.json())
+
             .then(r => {
+
                 loader.style.display = "none";
 
-                if (!r.ok) {
+                if(!r.ok){
 
-  if (r.pendiente) {
+                    if(r.pendiente){
 
-    bloqueado=false;
+                        bloqueado=false;
 
-    tipoActual="SALIDA";
+                        tipoActual="SALIDA";
 
-    if(qr){
-        qr.stop().catch(()=>{});
-        qr=null;
-    }
-
-    mostrarError(
-        `${r.mensaje}\n\nFecha pendiente: ${r.fechaPendiente}\n\nEscanee nuevamente el QR para registrar la salida.`
-    );
-
-    document.querySelector(".btn-entry").disabled = true;
-    document.querySelector(".btn-entry").style.opacity = ".4";
-
-    document.querySelector(".btn-exit").disabled = false;
-
-    return;
+if(qr){
+    qr.stop().catch(()=>{});
+    qr=null;
 }
 
-    mostrarError(r.mensaje);
-    return;
-}
+mostrarError(
+`${r.mensaje}\n\nFecha pendiente: ${r.fechaPendiente}\n\nAhora registre la salida pendiente.`
+);
+
+                        document.querySelector(".btn-entry").disabled=true;
+                        document.querySelector(".btn-entry").style.opacity=".4";
+
+                        document.querySelector(".btn-exit").disabled=false;
+
+                        return;
+                    }
+
+                    mostrarError(r.mensaje);
+                    return;
+                }
 
                 mostrarConfirmacion(tipoActual,r.mensaje);
-               
+
             })
+
             .catch(err=>{
+
                 loader.style.display="none";
-                mostrarError("Error de conexión.");
-                console.error(err);
+
+                console.error("ERROR FETCH:",err);
+
+                mostrarError(
+                    "Error de conexión con el servidor.\n\n" +
+                    err.message
+                );
+
             });
 
         },
+
         err=>{
+
             loader.style.display="none";
+
             mostrarError("No se pudo obtener la ubicación.");
+
             console.error(err);
+
         }
+
     );
+
 }
 
+
 function mostrarConfirmacion(tipo, msg) {
+
     confirmBox.className = "confirm " + (tipo === "ENTRADA" ? "entrada" : "salida");
+
     document.getElementById("badgeTexto").innerText = msg;
+
     confirmacion.style.display = "flex";
 
-if ("speechSynthesis" in window) {
 
-    speechSynthesis.cancel();
-
-    const primerNombre = trabajador.nombre.trim().split(" ")[0];
-
-    const texto = `${primerNombre}, ${tipo.toLowerCase()} registrada correctamente.`;
-
-    const voz = new SpeechSynthesisUtterance(texto);
-
-    voz.lang="es-ES";
-    voz.rate=1;
-    voz.pitch=1;
-    voz.volume=1;
-
-    let recargado=false;
-
-    const volverInicio=()=>{
-        if(recargado)return;
-        recargado=true;
+    if ("speechSynthesis" in window) {
 
         speechSynthesis.cancel();
 
+        const primerNombre = trabajador.nombre.trim().split(" ")[0];
+
+        const texto = `${primerNombre}, ${tipo.toLowerCase()} registrada correctamente.`;
+
+        const voz = new SpeechSynthesisUtterance(texto);
+
+        voz.lang="es-ES";
+        voz.rate=1;
+        voz.pitch=1;
+        voz.volume=1;
+
+
+        let recargado=false;
+
+
+        const volverInicio=()=>{
+
+            if(recargado)return;
+
+            recargado=true;
+
+            speechSynthesis.cancel();
+
+            setTimeout(()=>{
+                location.reload();
+            },500);
+
+        };
+
+
+        voz.onend=volverInicio;
+        voz.onerror=volverInicio;
+
+        speechSynthesis.speak(voz);
+
+        setTimeout(volverInicio,5000);
+
+
+    }else{
+
         setTimeout(()=>{
             location.reload();
-        },500);
-    };
+        },2500);
 
-    voz.onend = volverInicio;
-voz.onerror = volverInicio;
+    }
 
-speechSynthesis.speak(voz);
-
-setTimeout(volverInicio, 5000);
-
-} else {
-
-    setTimeout(() => {
-        location.reload();
-    }, 2500);
-
-}
-
-} // ← Cierre de la función mostrarConfirmacion()
+ }
 
 /* ======= AGREGA ESTO ======= */
 
@@ -766,15 +817,21 @@ function cerrarMensaje(){
 
     `;
 
+
     if(tipoActual==="SALIDA"){
+
         document.querySelector(".btn-entry").disabled=true;
         document.querySelector(".btn-entry").style.opacity=".4";
+
     }else{
+
         document.querySelector(".btn-entry").disabled=false;
         document.querySelector(".btn-entry").style.opacity="1";
+
     }
 
-}   
+}
+
 /* =========================== */
 
 function actualizarReloj(){
