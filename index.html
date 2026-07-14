@@ -500,7 +500,7 @@ display:none;
 
 <script>
 /* ===== TU LOGICA ORIGINAL ===== */
-const API_URL="https://script.google.com/macros/s/AKfycbyatjJLIKqTAXjSNJChEYPcQyNuteEcXvIZYoVGJbelzHNGN-OTO8A0Fjf7jm-CKjqV/exec";
+const API_URL="https://script.google.com/macros/s/AKfycbzH8GBCi52nNQMs-oZCHjXPTX-c0Q1YTepkQlhYhnnGfGozlip8fEL230Sz2g9ay5c3/exec";
 const QR_VALIDO="RRHH_ASISTENCIA_OK";
 let trabajador={},tipoActual="",qr=null,bloqueado=false;
 
@@ -508,7 +508,10 @@ const deviceId=localStorage.getItem("DEVICE_ID")||crypto.randomUUID();
 localStorage.setItem("DEVICE_ID",deviceId);
 
 function buscar(){
-if(dni.value.length!==8)return;
+if(!/^\d{8}$/.test(dni.value)){
+    mostrarError("Ingrese un DNI válido de 8 dígitos");
+    return;
+}
 loader.style.display="flex";
 
 fetch(API_URL,{method:"POST",body:new URLSearchParams({action:"buscar",dni:dni.value})})
@@ -528,26 +531,61 @@ foto.src=trabajador.foto||"https://via.placeholder.com/120";
 }
 
 function abrirQR(t){
-if(bloqueado)return;
+
+bloqueado=false;
 
 tipoActual=t;
+
 tipoTitulo.innerText="Registrar "+t;
+
 qrModal.style.display="flex";
 
-if(!qr)qr=new Html5Qrcode("reader");
 
-qr.start({facingMode:"environment"},{fps:8,qrbox:200},txt=>{
-if(txt!==QR_VALIDO||bloqueado)return;
+if(qr){
+    qr.stop().catch(()=>{});
+    qr=null;
+}
 
-bloqueado=true;
-cerrarQR();
-registrar();
+qr = new Html5Qrcode("reader");
+
+
+qr.start(
+    {facingMode:"environment"},
+    {fps:8,qrbox:200},
+    txt=>{
+
+        if(txt!==QR_VALIDO || bloqueado)return;
+
+        bloqueado=true;
+
+        qr.stop()
+        .then(()=>{
+            qrModal.style.display="none";
+            registrar();
+        })
+        .catch(()=>{
+            qrModal.style.display="none";
+            registrar();
+        });
+
+    }
+)
+.catch(err=>{
+    console.error("Error QR:",err);
+    mostrarError("No se pudo iniciar la cámara.");
 });
+
 }
 
 function cerrarQR(){
+
 qrModal.style.display="none";
-qr?.stop().catch(()=>{});
+
+if(qr){
+    qr.stop().catch(()=>{});
+    qr=null;
+}
+
 }
 
 function registrar() {
@@ -576,19 +614,28 @@ function registrar() {
 
                 if (!r.ok) {
 
-    if (r.pendiente) {
+  if (r.pendiente) {
 
-        mostrarError(
-            `${r.mensaje}\n\nFecha: ${r.fechaPendiente}`
-        );
+    bloqueado=false;
 
-        document.querySelector(".btn-entry").disabled = true;
-        document.querySelector(".btn-entry").style.opacity = ".4";
+    tipoActual="SALIDA";
 
-        document.querySelector(".btn-exit").disabled = false;
-
-        return;
+    if(qr){
+        qr.stop().catch(()=>{});
+        qr=null;
     }
+
+    mostrarError(
+        `${r.mensaje}\n\nFecha pendiente: ${r.fechaPendiente}\n\nEscanee nuevamente el QR para registrar la salida.`
+    );
+
+    document.querySelector(".btn-entry").disabled = true;
+    document.querySelector(".btn-entry").style.opacity = ".4";
+
+    document.querySelector(".btn-exit").disabled = false;
+
+    return;
+}
 
     mostrarError(r.mensaje);
     return;
@@ -686,7 +733,7 @@ function mostrarError(mensaje){
             Atención
         </h3>
 
-        <p style="font-size:17px;margin-bottom:22px;">
+        <p style="font-size:17px;margin-bottom:22px;white-space:pre-line;">
             ${mensaje}
         </p>
 
@@ -718,7 +765,16 @@ function cerrarMensaje(){
         <div id="badgeTexto" class="badge"></div>
 
     `;
-}
+
+    if(tipoActual==="SALIDA"){
+        document.querySelector(".btn-entry").disabled=true;
+        document.querySelector(".btn-entry").style.opacity=".4";
+    }else{
+        document.querySelector(".btn-entry").disabled=false;
+        document.querySelector(".btn-entry").style.opacity="1";
+    }
+
+}   
 /* =========================== */
 
 function actualizarReloj(){
@@ -733,17 +789,25 @@ actualizarReloj();
 let deferredPrompt;
 
 window.addEventListener("beforeinstallprompt",(e)=>{
-e.preventDefault();
-deferredPrompt=e;
-installBtn.style.display="block";
+    e.preventDefault();
+    deferredPrompt=e;
+    installBtn.style.display="block";
 });
 
 installBtn.addEventListener("click",()=>{
-installBtn.style.display="none";
-deferredPrompt.prompt();
-deferredPrompt.userChoice.then(()=>{
-deferredPrompt=null;
-});
+
+    installBtn.style.display="none";
+
+    if(deferredPrompt){
+
+        deferredPrompt.prompt();
+
+        deferredPrompt.userChoice.then(()=>{
+            deferredPrompt=null;
+        });
+
+    }
+
 });
 </script>
 
