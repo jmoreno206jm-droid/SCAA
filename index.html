@@ -500,7 +500,7 @@ display:none;
 
 <script>
 /* ===== TU LOGICA ORIGINAL ===== */
-const API_URL="https://script.google.com/macros/s/AKfycbyzr4uSv3zMeOVtpv_1w5WPEcmmJQ03m9R2lwrRopOoGczLpRobkNi7ZUp8B8SPAI2D/exec";
+const API_URL="https://script.google.com/macros/s/AKfycbyatjJLIKqTAXjSNJChEYPcQyNuteEcXvIZYoVGJbelzHNGN-OTO8A0Fjf7jm-CKjqV/exec";
 const QR_VALIDO="RRHH_ASISTENCIA_OK";
 let trabajador={},tipoActual="",qr=null,bloqueado=false;
 
@@ -574,10 +574,25 @@ function registrar() {
             .then(r => {
                 loader.style.display = "none";
 
-                if(!r.ok){
-                    mostrarError(r.mensaje);
-                    return;
-                }
+                if (!r.ok) {
+
+    if (r.pendiente) {
+
+        mostrarError(
+            `${r.mensaje}\n\nFecha: ${r.fechaPendiente}`
+        );
+
+        document.querySelector(".btn-entry").disabled = true;
+        document.querySelector(".btn-entry").style.opacity = ".4";
+
+        document.querySelector(".btn-exit").disabled = false;
+
+        return;
+    }
+
+    mostrarError(r.mensaje);
+    return;
+}
 
                 mostrarConfirmacion(tipoActual,r.mensaje);
                
