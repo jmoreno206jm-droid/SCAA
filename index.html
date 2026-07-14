@@ -818,17 +818,14 @@ function cerrarMensaje(){
     `;
 
 
-    if(tipoActual==="SALIDA"){
+    // Si fue un error de validación,
+    // vuelve automáticamente al inicio
 
-        document.querySelector(".btn-entry").disabled=true;
-        document.querySelector(".btn-entry").style.opacity=".4";
+    setTimeout(()=>{
 
-    }else{
+        location.reload();
 
-        document.querySelector(".btn-entry").disabled=false;
-        document.querySelector(".btn-entry").style.opacity="1";
-
-    }
+    },500);
 
 }
 
