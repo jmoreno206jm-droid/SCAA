@@ -208,15 +208,16 @@ const textoError = document.getElementById("textoError");
 const installBtn = document.getElementById("installBtn");
 
 // ==============================================
-// 🎙️ CONFIRMACIÓN POR VOZ
+// 🎙️ CONFIRMACIÓN POR VOZ — Ya NO se corta
 // ==============================================
 function hablar(mensaje) {
   if ('speechSynthesis' in window) {
     window.speechSynthesis.cancel();
     const voz = new SpeechSynthesisUtterance(mensaje);
     voz.lang = "es-ES";
-    voz.rate = 1.0;
+    voz.rate = 0.9; // Más lento y claro
     voz.volume = 1.0;
+    voz.pitch = 1.0;
     window.speechSynthesis.speak(voz);
   }
 }
@@ -300,7 +301,6 @@ async function registrar() {
     const datos = await respuesta.json();
     if (!datos.ok) throw new Error(datos.mensaje || "No se pudo registrar");
     mostrarConfirmacion(tipoActual, datos.mensaje || "Registrado correctamente");
-    setTimeout(() => location.reload(), 3200);
   } catch (err) {
     let mensaje = err.message;
     if (err.name === "AbortError") mensaje = "⏳ El servidor tardó mucho. Intenta de nuevo.";
@@ -309,20 +309,38 @@ async function registrar() {
   } finally { mostrarCargando(false); }
 }
 
+// ==============================================
+// ✅ CONFIRMACIÓN — ESPERA A QUE TERMINE DE HABLAR
+// ==============================================
 function mostrarConfirmacion(tipo, mensaje) {
   const esEntrada = tipo === "ENTRADA";
   confirmBox.className = "modal-contenido confirm-" + (esEntrada ? "entrada" : "salida");
   etiquetaEstado.textContent = esEntrada ? "✅ ENTRADA REGISTRADA" : "⏰ SALIDA REGISTRADA";
   mensajeConfirmacion.textContent = mensaje;
   confirmacion.classList.add("activo");
-  
-  // 🎙️ CONFIRMACIÓN POR VOZ
+
   const textoVoz = esEntrada 
     ? "Entrada registrada correctamente" 
     : "Salida registrada correctamente";
-  hablar(textoVoz);
 
-  setTimeout(() => confirmacion.classList.remove("activo"), 3200);
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const voz = new SpeechSynthesisUtterance(textoVoz);
+    voz.lang = "es-ES";
+    voz.rate = 0.9;
+    voz.volume = 1.0;
+    voz.pitch = 1.0;
+
+    // ⏳ TERMINA DE HABLAR → LUEGO RECARGA
+    voz.onend = function () {
+      setTimeout(() => location.reload(), 600);
+    };
+
+    window.speechSynthesis.speak(voz);
+  } else {
+    // Respaldo sin voz
+    setTimeout(() => location.reload(), 4000);
+  }
 }
 
 function actualizarReloj() {
@@ -334,7 +352,12 @@ setInterval(actualizarReloj, 1000); actualizarReloj();
 
 let deferredPrompt;
 window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferredPrompt = e; installBtn.style.display = "block"; });
-installBtn.addEventListener("click", async () => { if (!deferredPrompt) return; installBtn.style.display = "none"; deferredPrompt.prompt(); deferredPrompt = null; });
+installBtn.addEventListener("click", async () => {
+  if (!deferredPrompt) return;
+  installBtn.style.display = "none";
+  deferredPrompt.prompt();
+  deferredPrompt = null;
+});
 
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => { try { await navigator.serviceWorker.register("sw.js"); } catch {} });
