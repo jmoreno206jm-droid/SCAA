@@ -207,6 +207,20 @@ const modalError = document.getElementById("modalError");
 const textoError = document.getElementById("textoError");
 const installBtn = document.getElementById("installBtn");
 
+// ==============================================
+// 🎙️ CONFIRMACIÓN POR VOZ
+// ==============================================
+function hablar(mensaje) {
+  if ('speechSynthesis' in window) {
+    window.speechSynthesis.cancel();
+    const voz = new SpeechSynthesisUtterance(mensaje);
+    voz.lang = "es-ES";
+    voz.rate = 1.0;
+    voz.volume = 1.0;
+    window.speechSynthesis.speak(voz);
+  }
+}
+
 function mostrarCargando(mostrar = true) { loader.classList.toggle("activo", mostrar); }
 function mostrarError(mensaje) {
   textoError.textContent = mensaje;
@@ -301,6 +315,13 @@ function mostrarConfirmacion(tipo, mensaje) {
   etiquetaEstado.textContent = esEntrada ? "✅ ENTRADA REGISTRADA" : "⏰ SALIDA REGISTRADA";
   mensajeConfirmacion.textContent = mensaje;
   confirmacion.classList.add("activo");
+  
+  // 🎙️ CONFIRMACIÓN POR VOZ
+  const textoVoz = esEntrada 
+    ? "Entrada registrada correctamente" 
+    : "Salida registrada correctamente";
+  hablar(textoVoz);
+
   setTimeout(() => confirmacion.classList.remove("activo"), 3200);
 }
 
