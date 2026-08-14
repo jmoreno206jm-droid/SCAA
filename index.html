@@ -30,59 +30,16 @@
 }
 *{box-sizing:border-box;font-family:"Segoe UI",system-ui}
 body{
-margin:0;
-min-height:100dvh;
-display:flex;
-align-items:center;
-justify-content:center;
-padding:15px;
+margin:0;height:100vh;display:flex;
+align-items:center;justify-content:center;
 background:linear-gradient(145deg,#ECEFF1,#CFD8DC);
 }
-
-@media(max-width:420px){
-
-body{
-padding:15px 10px;
-}
-
-.logo{
-font-size:24px;
-margin-bottom:15px;
-}
-
-.credencial{
-border-radius:24px;
-}
-
-.foto-contenedor{
-margin-top:15px;
-margin-bottom:10px;
-}
-
-.botones{
-margin-top:20px;
-gap:12px;
-}
-
-.reloj{
-font-size:26px;
-}
-
-.fecha{
-font-size:15px;
-}
-
-}
 .card{
-width:100%;
-max-width:400px;
-padding:24px;
-border-radius:28px;
-background:#fff;
+width:100%;max-width:390px;padding:34px;
+border-radius:28px;background:#fff;
 text-align:center;
 box-shadow:0 30px 60px rgba(0,0,0,.25);
 animation:fadeUp .6s ease;
-margin:auto;
 }
 @keyframes fadeUp{
 from{opacity:0;transform:translateY(30px)}
@@ -116,219 +73,33 @@ background:linear-gradient(180deg,var(--adecco),var(--adecco-dark));
 color:#fff;
 box-shadow:0 14px 28px rgba(228,0,43,.45);
 }
-/* ===========================
-   PANTALLA 2 - NUEVO DISEÑO
-===========================*/
-
-.credencial{
-
-position:relative;
-overflow:hidden;
-
-background:linear-gradient(
-160deg,
-#52091A 0%,
-#8E1530 45%,
-#D72645 100%
-);
-
-border-radius:28px;
-
-padding:22px 18px;
-
-color:white;
-
-min-height:auto;
-
-}
-
-/* Ondas */
-
-.ondas{
-position:absolute;
-left:-60px;
-top:-40px;
-width:220px;
-height:750px;
-background:
-radial-gradient(circle at left,#ffffff 12px,transparent 13px),
-linear-gradient(90deg,#ffffff 0,#ffffff 12px,transparent 13px);
-opacity:.95;
-transform:rotate(8deg);
-
-pointer-events:none;
-z-index:1;
-}
-
-.ondas::before{
-content:"";
-position:absolute;
-left:20px;
-top:-20px;
-width:70px;
-height:760px;
-background:#22060B;
-border-radius:100px;
-transform:rotate(10deg);
-}
-
-.ondas::after{
-content:"";
-position:absolute;
-left:70px;
-top:-20px;
-width:45px;
-height:760px;
-background:#48131D;
-border-radius:100px;
-transform:rotate(10deg);
-}
-
-/* Foto */
-
-.foto-contenedor{
-display:flex;
-justify-content:center;
-align-items:center;
-margin-top:30px;
-margin-bottom:18px;
-position:relative;
-z-index:5;
-background:none;
-}
-
-.foto{
-
-width:125px;
-height:150px;
-
-border-radius:22px;
-
-object-fit:cover;
-
-border:7px solid white;
-
-background:white;
-
-box-shadow:0 10px 30px rgba(0,0,0,.35);
-
-}
-
-/* Datos */
-
-.datos{
-
-text-align:center;
-
-position:relative;
-z-index:5;
-
-}
-
-#nombre{
-
-font-size:24px;
-
-font-weight:800;
-
-margin:0;
-
-color:white;
-
-letter-spacing:.5px;
-
-}
-
-#cargo{
-
-margin-top:6px;
-
-font-size:17px;
-
-font-weight:500;
-
-color:#F4F4F4;
-
-}
-
-.linea{
-
-width:90px;
-
-height:3px;
-
-background:white;
-
-margin:20px auto;
-
-border-radius:20px;
-
-}
-
-.reloj{
-font-size:32px;
-font-weight:800;
-color:#FFFFFF !important;
-margin-top:5px;
-text-shadow:0 2px 6px rgba(0,0,0,.35);
-}
-
-.fecha{
-font-size:18px;
-margin-top:8px;
-color:#FFFFFF !important;
-font-weight:500;
-text-shadow:0 2px 6px rgba(0,0,0,.35);
-}
-
-/* Botones */
-
-.botones{
-
-margin-top:35px;
-
-display:flex;
-
-flex-direction:column;
-
-gap:15px;
-
-}
-
 .btn-entry{
-
-background:#2E7D32;
-
-color:white;
-
-border-radius:16px;
-
-padding:15px;
-
-font-size:15px;
-
-font-weight:bold;
-
-box-shadow:0 10px 25px rgba(0,0,0,.25);
-
+background:linear-gradient(180deg,var(--green),var(--green-dark));
+color:#fff;
+box-shadow:0 14px 28px rgba(46,125,50,.45);
 }
-
 .btn-exit{
-
-background:#FBC02D;
-
-color:#111;
-
-border-radius:16px;
-
-padding:15px;
-
-font-size:15px;
-
-font-weight:bold;
-
-box-shadow:0 10px 25px rgba(0,0,0,.25);
-
+background:linear-gradient(180deg,var(--yellow),var(--yellow-dark));
+color:#000;
+box-shadow:0 14px 28px rgba(249,168,37,.45);
+}
+.foto{
+width:120px;height:120px;
+border-radius:22px;
+object-fit:cover;
+margin:14px auto;
+border:4px solid var(--adecco);
+box-shadow:0 12px 26px rgba(228,0,43,.35);
+}
+.reloj{
+margin-top:8px;
+font-weight:700;
+color:var(--text);
+}
+.fecha{
+font-size:14px;
+color:var(--muted);
+margin-bottom:14px;
 }
 .modal{
 display:none;position:fixed;inset:0;
@@ -377,24 +148,6 @@ font-weight:700;
 }
 .confirm.entrada .badge{background:var(--green);color:#fff}
 .confirm.salida .badge{background:var(--yellow);color:#000}
-/* ERROR */
-
-.confirm.error .check{
-border-color:#E53935;
-}
-
-.confirm.error svg{
-stroke:#E53935;
-}
-
-.confirm.error .badge{
-background:#E53935;
-color:#fff;
-}
-
-.confirm.error button{
-margin-top:10px;
-}
 #loader{
 display:none;position:fixed;inset:0;
 background:rgba(255,255,255,.75);
@@ -408,11 +161,7 @@ border-top:4px solid var(--adecco);
 animation:spin 1s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
-#reader{
-width:100%;
-max-width:230px;
-margin:auto;
-}
+#reader{width:230px}
 
 /* BOTON INSTALAR */
 #installBtn{
@@ -457,40 +206,14 @@ display:none;
 <button class="btn" onclick="buscar()">Buscar</button>
 </div>
 
-<div id="p2" class="credencial" style="display:none">
-
-<div class="ondas"></div>
-
-<div class="foto-contenedor">
-    <img id="foto" class="foto">
-</div>
-
-<div class="datos">
-
-<h2 id="nombre"></h2>
-
-<p id="cargo"></p>
-
-<div class="linea"></div>
-
+<div id="p2" style="display:none">
+<img id="foto" class="foto">
+<h3 id="nombre"></h3>
+<p id="cargo" style="color:var(--muted)"></p>
 <div class="reloj" id="hora"></div>
-
 <div class="fecha" id="fecha"></div>
-
-</div>
-
-<div class="botones">
-
-<button class="btn-entry" onclick="abrirQR('ENTRADA')">
-🟢 REGISTRAR ENTRADA
-</button>
-
-<button class="btn-exit" onclick="abrirQR('SALIDA')">
-🟡 REGISTRAR SALIDA
-</button>
-
-</div>
-
+<button class="btn-entry" onclick="abrirQR('ENTRADA')">ENTRADA</button><br><br>
+<button class="btn-exit" onclick="abrirQR('SALIDA')">SALIDA</button>
 </div>
 
 <!-- BOTON INSTALAR -->
@@ -500,7 +223,7 @@ display:none;
 
 <script>
 /* ===== TU LOGICA ORIGINAL ===== */
-const API_URL="https://script.google.com/macros/s/AKfycbwzUvFqrLPvbU3naKzqnRmhGHIyTX1V3Rc-c3sEgg2guVz9JpoiVrbMsQ3GCwGXYth3/exec";
+const API_URL="https://script.google.com/macros/s/AKfycbzxIxF3PeS-khRgdrizzPoD2d1nutQg8dAP6TbBE986EI-JpeT4z5LxQBNMAKk6j30/exec";
 const QR_VALIDO="RRHH_ASISTENCIA_OK";
 let trabajador={},tipoActual="",qr=null,bloqueado=false;
 
@@ -508,10 +231,7 @@ const deviceId=localStorage.getItem("DEVICE_ID")||crypto.randomUUID();
 localStorage.setItem("DEVICE_ID",deviceId);
 
 function buscar(){
-if(!/^\d{8}$/.test(dni.value)){
-    mostrarError("Ingrese un DNI válido de 8 dígitos");
-    return;
-}
+if(dni.value.length!==8)return;
 loader.style.display="flex";
 
 fetch(API_URL,{method:"POST",body:new URLSearchParams({action:"buscar",dni:dni.value})})
@@ -531,298 +251,62 @@ foto.src=trabajador.foto||"https://via.placeholder.com/120";
 }
 
 function abrirQR(t){
-
-bloqueado=false;
+if(bloqueado)return;
 
 tipoActual=t;
-
 tipoTitulo.innerText="Registrar "+t;
-
 qrModal.style.display="flex";
 
+if(!qr)qr=new Html5Qrcode("reader");
 
-if(qr){
-    qr.stop().catch(()=>{});
-    qr=null;
-}
+qr.start({facingMode:"environment"},{fps:8,qrbox:200},txt=>{
+if(txt!==QR_VALIDO||bloqueado)return;
 
-qr = new Html5Qrcode("reader");
-
-
-qr.start(
-    {facingMode:"environment"},
-    {fps:8,qrbox:200},
-    txt=>{
-
-        if(txt!==QR_VALIDO || bloqueado)return;
-
-        bloqueado=true;
-
-        qr.stop()
-.then(()=>{
-    return qr.clear();
-})
-.catch(err=>{
-    console.log("Error limpiando QR:",err);
-})
-.finally(()=>{
-
-    qrModal.style.display="none";
-
-    const lector = qr;
-    qr=null;
-
-    registrar();
-
+bloqueado=true;
+cerrarQR();
+registrar();
 });
-
-    }
-)
-.catch(err=>{
-    console.error("Error QR:",err);
-    mostrarError("No se pudo iniciar la cámara.");
-});
-
 }
 
 function cerrarQR(){
-
-    qrModal.style.display="none";
-
-    if(qr){
-
-        qr.stop()
-        .then(()=>{
-            return qr.clear();
-        })
-        .catch(err=>{
-            console.log("Error cerrando QR:",err);
-        })
-        .finally(()=>{
-            qr=null;
-        });
-
-    }
-
-    bloqueado=false;
+qrModal.style.display="none";
+qr?.stop().catch(()=>{});
 }
 
-function registrar() {
+function registrar(){
+loader.style.display="flex";
 
-    loader.style.display = "flex";
-
-    navigator.geolocation.getCurrentPosition(
-
-        p => {
-
-            fetch(API_URL,{
-                method:"POST",
-                body:new URLSearchParams({
-                    action:"registrar",
-                    dni:trabajador.dni,
-                    nombre:trabajador.nombre,
-                    cargo:trabajador.cargo,
-                    tipo:tipoActual,
-                    lat:p.coords.latitude,
-                    lng:p.coords.longitude,
-                    deviceId,
-                    qr:QR_VALIDO
-                })
-            })
-
-            .then(r => r.json())
-
-            .then(r => {
-
-                loader.style.display = "none";
-
-                if(!r.ok){
-
-                    if(r.pendiente){
-
-                        bloqueado=false;
-
-                        tipoActual="SALIDA";
-
-if(qr){
-    qr.stop().catch(()=>{});
-    qr=null;
+navigator.geolocation.getCurrentPosition(p=>{
+fetch(API_URL,{method:"POST",body:new URLSearchParams({
+action:"registrar",
+dni:trabajador.dni,
+nombre:trabajador.nombre,
+cargo:trabajador.cargo,
+tipo:tipoActual,
+lat:p.coords.latitude,
+lng:p.coords.longitude,
+deviceId,
+qr:QR_VALIDO
+})})
+.then(r=>r.json())
+.then(r=>{
+loader.style.display="none";
+mostrarConfirmacion(tipoActual,r.mensaje);
+setTimeout(()=>location.reload(),2200);
+});
+});
 }
 
-mostrarError(
-`${r.mensaje}\n\nFecha pendiente: ${r.fechaPendiente}\n\nAhora registre la salida pendiente.`
-);
-
-                        document.querySelector(".btn-entry").disabled=true;
-                        document.querySelector(".btn-entry").style.opacity=".4";
-
-                        document.querySelector(".btn-exit").disabled=false;
-
-                        return;
-                    }
-
-                    mostrarError(r.mensaje);
-                    return;
-                }
-
-                mostrarConfirmacion(tipoActual,r.mensaje);
-
-            })
-
-            .catch(err=>{
-
-                loader.style.display="none";
-
-                console.error("ERROR FETCH:",err);
-
-                mostrarError(
-                    "Error de conexión con el servidor.\n\n" +
-                    err.message
-                );
-
-            });
-
-        },
-
-        err=>{
-
-            loader.style.display="none";
-
-            mostrarError("No se pudo obtener la ubicación.");
-
-            console.error(err);
-
-        }
-
-    );
-
+function mostrarConfirmacion(tipo,msg){
+confirmBox.className="confirm "+(tipo==="ENTRADA"?"entrada":"salida");
+badgeTexto.innerText=msg;
+confirmacion.style.display="flex";
 }
-
-
-function mostrarConfirmacion(tipo, msg) {
-
-    confirmBox.className = "confirm " + (tipo === "ENTRADA" ? "entrada" : "salida");
-
-    document.getElementById("badgeTexto").innerText = msg;
-
-    confirmacion.style.display = "flex";
-
-
-    if ("speechSynthesis" in window) {
-
-        speechSynthesis.cancel();
-
-        const primerNombre = trabajador.nombre.trim().split(" ")[0];
-
-        const texto = `${primerNombre}, ${tipo.toLowerCase()} registrada correctamente.`;
-
-        const voz = new SpeechSynthesisUtterance(texto);
-
-        voz.lang="es-ES";
-        voz.rate=1;
-        voz.pitch=1;
-        voz.volume=1;
-
-
-        let recargado=false;
-
-
-        const volverInicio=()=>{
-
-            if(recargado)return;
-
-            recargado=true;
-
-            speechSynthesis.cancel();
-
-            setTimeout(()=>{
-                location.reload();
-            },500);
-
-        };
-
-
-        voz.onend=volverInicio;
-        voz.onerror=volverInicio;
-
-        speechSynthesis.speak(voz);
-
-        setTimeout(volverInicio,5000);
-
-
-    }else{
-
-        setTimeout(()=>{
-            location.reload();
-        },2500);
-
-    }
-
- }
-
-/* ======= AGREGA ESTO ======= */
-
-function mostrarError(mensaje){
-
-    loader.style.display="none";
-
-    confirmBox.className="confirm error";
-
-    confirmBox.innerHTML=`
-
-        <div class="check">
-            <svg viewBox="0 0 52 52">
-                <path d="M16 16 L36 36 M36 16 L16 36"/>
-            </svg>
-        </div>
-
-        <div class="badge">
-            ERROR
-        </div>
-
-        <h3 style="margin:18px 0 10px;font-size:22px;">
-            Atención
-        </h3>
-
-        <p style="font-size:17px;margin-bottom:22px;white-space:pre-line;">
-            ${mensaje}
-        </p>
-
-        <button class="btn" onclick="cerrarMensaje()">
-            ACEPTAR
-        </button>
-
-    `;
-
-    confirmacion.style.display="flex";
-
-}
-
-
-function cerrarMensaje(){
-
-    confirmacion.style.display="none";
-
-    confirmBox.className="confirm";
-
-    confirmBox.innerHTML=`
-
-        <div class="check">
-            <svg viewBox="0 0 52 52">
-                <path d="M14 27 L23 36 L38 16"/>
-            </svg>
-        </div>
-
-        <div id="badgeTexto" class="badge"></div>
-
-    `;
-}
-/* =========================== */
 
 function actualizarReloj(){
-    const f=new Date();
-    hora.innerText=f.toLocaleTimeString();
-    fecha.innerText=f.toLocaleDateString("es-PE",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
+const f=new Date();
+hora.innerText=f.toLocaleTimeString();
+fecha.innerText=f.toLocaleDateString("es-PE",{weekday:"long",day:"numeric",month:"long",year:"numeric"});
 }
 setInterval(actualizarReloj,1000);
 actualizarReloj();
@@ -831,25 +315,17 @@ actualizarReloj();
 let deferredPrompt;
 
 window.addEventListener("beforeinstallprompt",(e)=>{
-    e.preventDefault();
-    deferredPrompt=e;
-    installBtn.style.display="block";
+e.preventDefault();
+deferredPrompt=e;
+installBtn.style.display="block";
 });
 
 installBtn.addEventListener("click",()=>{
-
-    installBtn.style.display="none";
-
-    if(deferredPrompt){
-
-        deferredPrompt.prompt();
-
-        deferredPrompt.userChoice.then(()=>{
-            deferredPrompt=null;
-        });
-
-    }
-
+installBtn.style.display="none";
+deferredPrompt.prompt();
+deferredPrompt.userChoice.then(()=>{
+deferredPrompt=null;
+});
 });
 </script>
 
