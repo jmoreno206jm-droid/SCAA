@@ -23,10 +23,8 @@
   --adecco-soft:#FFE6E9;
   --green:#00A850;
   --green-dark:#008840;
-  --green-light:#34D399;
   --yellow:#FFB800;
   --yellow-dark:#E0A000;
-  --yellow-light:#FCD34D;
   --red-error:#DC2626;
   --red-error-dark:#B91C1C;
   --white:#FFFFFF;
@@ -59,35 +57,7 @@ body{
   overflow-x:hidden;
 }
 
-/* Elementos decorativos de fondo */
-body::before, body::after{
-  content:"";
-  position:absolute;
-  border-radius:50%;
-  background:rgba(255,255,255,.06);
-  animation:flotar 8s ease-in-out infinite;
-}
-body::before{
-  width:300px;
-  height:300px;
-  top:-100px;
-  right:-80px;
-  animation-delay:0s;
-}
-body::after{
-  width:200px;
-  height:200px;
-  bottom:-60px;
-  left:-60px;
-  animation-delay:3s;
-}
-
-@keyframes flotar{
-  0%,100%{transform:translateY(0) rotate(0deg);}
-  50%{transform:translateY(-25px) rotate(5deg);}
-}
-
-/* Tarjeta principal — CENTRADA Y RESPONSIVA */
+/* Tarjeta principal — SIN animaciones, máxima velocidad */
 .card{
   width: 100%;
   max-width: 400px;
@@ -97,16 +67,10 @@ body::after{
   box-shadow:0 25px 80px rgba(0,0,0,.35);
   position:relative;
   z-index:1;
-  animation:entradaSuave .7s cubic-bezier(0.22,1,0.36,1);
   margin: 0 auto;
 }
 
-@keyframes entradaSuave{
-  from{opacity:0;transform:translateY(40px) scale(.92);}
-  to{opacity:1;transform:translateY(0) scale(1);}
-}
-
-/* Logo Adecco */
+/* Logo Adecco — SIN animación */
 .logo-contenedor{
   text-align:center;
   margin-bottom:24px;
@@ -116,31 +80,15 @@ body::after{
   font-weight:900;
   letter-spacing:-1px;
   color:var(--adecco);
-  text-shadow:0 4px 12px rgba(228,0,43,.15);
   position:relative;
   display:inline-block;
 }
 .logo-adecco span{color:var(--adecco-dark)}
-.logo-adecco::after{
-  content:"";
-  position:absolute;
-  bottom:-6px;
-  left:10%;
-  width:80%;
-  height:4px;
-  background:linear-gradient(90deg,var(--adecco),var(--adecco-light),var(--adecco));
-  border-radius:2px;
-  animation:brillar 3s ease-in-out infinite;
-}
-@keyframes brillar{
-  0%,100%{opacity:.7;transform:scaleX(.8);}
-  50%{opacity:1;transform:scaleX(1);}
-}
 .subtitulo{
   text-align:center;
   color:var(--text-muted);
   font-size:clamp(13px, 3.5vw, 15px);
-  margin-top:12px;
+  margin-top:8px;
 }
 
 /* Inputs */
@@ -151,19 +99,18 @@ input{
   border:2px solid var(--gray-200);
   text-align:center;
   font-size:clamp(16px, 4vw, 17px);
-  transition:.3s cubic-bezier(0.4,0,0.2,1);
   background:var(--gray-50);
   margin-bottom:14px;
+  transition: border-color .2s ease, box-shadow .2s ease;
 }
 input:focus{
   outline:none;
   border-color:var(--adecco);
   background:var(--white);
-  box-shadow:0 0 0 5px rgba(228,0,43,.12),0 8px 20px rgba(228,0,43,.15);
-  transform:translateY(-2px);
+  box-shadow:0 0 0 4px rgba(228,0,43,.1);
 }
 
-/* Botones base */
+/* Botones — Transiciones suaves pero ligeras */
 button{
   width:100%;
   padding:14px;
@@ -172,35 +119,25 @@ button{
   font-size:clamp(15px, 3.8vw, 16px);
   font-weight:700;
   cursor:pointer;
-  transition:.3s cubic-bezier(0.4,0,0.2,1);
+  transition: transform .15s ease;
   letter-spacing:.3px;
 }
-button:hover{transform:translateY(-3px);box-shadow:0 12px 30px rgba(0,0,0,.2)}
-button:active{transform:translateY(0);box-shadow:0 6px 15px rgba(0,0,0,.15)}
-button:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
+button:active{transform:scale(.97)}
+button:disabled{opacity:.5;cursor:not-allowed}
 
 .btn-buscar{
   background:linear-gradient(135deg,var(--adecco),var(--adecco-dark));
   color:var(--white);
-  box-shadow:0 8px 24px rgba(228,0,43,.4);
 }
-.btn-buscar:hover{box-shadow:0 14px 35px rgba(228,0,43,.45)}
-
 .btn-entrada{
   background:linear-gradient(135deg,var(--green),var(--green-dark));
   color:var(--white);
-  box-shadow:0 8px 24px rgba(0,168,80,.35);
   margin-bottom:12px;
 }
-.btn-entrada:hover{box-shadow:0 14px 35px rgba(0,168,80,.4)}
-
 .btn-salida{
   background:linear-gradient(135deg,var(--yellow),var(--yellow-dark));
   color:#000;
-  box-shadow:0 8px 24px rgba(255,184,0,.35);
 }
-.btn-salida:hover{box-shadow:0 14px 35px rgba(255,184,0,.4)}
-
 .btn-cancelar{
   background:var(--gray-100);
   color:var(--text-dark);
@@ -220,13 +157,8 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
   border-radius:50%;
   object-fit:cover;
   border:5px solid var(--adecco);
-  box-shadow:0 0 0 4px var(--adecco-soft),0 15px 35px rgba(228,0,43,.25);
+  box-shadow:0 0 0 4px var(--adecco-soft);
   background:var(--gray-100);
-  animation:aparecer .6s ease-out;
-}
-@keyframes aparecer{
-  from{transform:scale(.7);opacity:0}
-  to{transform:scale(1);opacity:1}
 }
 
 /* Datos del empleado */
@@ -244,18 +176,13 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
   margin-bottom:16px;
 }
 
-/* Reloj y fecha */
+/* Reloj y fecha — SIN animación */
 .reloj{
   text-align:center;
   font-size:clamp(28px, 7vw, 32px);
   font-weight:900;
   color:var(--adecco);
   letter-spacing:1px;
-  animation:pulseTiempo 2s ease-in-out infinite;
-}
-@keyframes pulseTiempo{
-  0%,100%{color:var(--adecco)}
-  50%{color:var(--adecco-dark)}
 }
 .fecha{
   text-align:center;
@@ -265,19 +192,19 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
 }
 
 /* ==============================================
-   MODALES ANIMADOS
+   MODALES — SOLO AQUÍ VAN LAS ANIMACIONES ✅
    ============================================== */
 .modal{
   display:none;
   position:fixed;
   inset:0;
   background:rgba(0,0,0,.55);
-  backdrop-filter:blur(12px);
+  backdrop-filter:blur(8px);
   justify-content:center;
   align-items:center;
   z-index:100;
   padding: 16px;
-  animation:fadeIn .3s ease;
+  animation:fadeIn .2s ease;
 }
 .modal.activo{display:flex}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
@@ -289,18 +216,16 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
   width:100%;
   max-width:340px;
   box-shadow:0 35px 90px rgba(0,0,0,.4);
-  animation:modalEntrada .5s cubic-bezier(0.34,1.56,0.64,1);
-  transform-origin:center;
+  animation:modalEntrada .35s ease;
   margin: 0 auto;
 }
 @keyframes modalEntrada{
-  0%{opacity:0;transform:scale(.7) translateY(30px)}
-  60%{transform:scale(1.05) translateY(-5px)}
-  100%{opacity:1;transform:scale(1) translateY(0)}
+  from{opacity:0;transform:scale(.9)}
+  to{opacity:1;transform:scale(1)}
 }
 
 /* ==============================================
-   ✅ CONFIRMACIÓN — ANIMACIONES
+   ✅ CONFIRMACIÓN — ANIMACIONES SOLO AQUÍ
    ============================================== */
 .icono-check{
   width:clamp(80px, 20vw, 96px);
@@ -311,13 +236,12 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
   align-items:center;
   justify-content:center;
   margin:0 auto 20px;
-  animation:iconoRebote .8s cubic-bezier(0.34,1.56,0.64,1);
+  animation:iconoRebote .5s cubic-bezier(0.34,1.56,0.64,1);
 }
 @keyframes iconoRebote{
-  0%{transform:scale(0) rotate(-20deg)}
-  50%{transform:scale(1.2) rotate(5deg)}
-  70%{transform:scale(.95) rotate(-2deg)}
-  100%{transform:scale(1) rotate(0deg)}
+  0%{transform:scale(0)}
+  70%{transform:scale(1.1)}
+  100%{transform:scale(1)}
 }
 .icono-check svg{
   width:clamp(44px, 11vw, 52px);
@@ -326,20 +250,18 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
   stroke-width:4;
   stroke-dasharray:100;
   stroke-dashoffset:100;
-  animation:dibujarCheck .7s ease forwards .35s;
+  animation:dibujarCheck .4s ease forwards .2s;
 }
 @keyframes dibujarCheck{to{stroke-dashoffset:0}}
 
 .confirm-entrada .icono-check{
   border-color:var(--green);
-  background:linear-gradient(135deg,rgba(0,168,80,.12),rgba(52,211,153,.08));
-  box-shadow:0 0 0 8px rgba(0,168,80,.06),0 0 40px rgba(0,168,80,.25);
+  background:rgba(0,168,80,.08);
 }
 .confirm-entrada svg{stroke:var(--green)}
 .confirm-salida .icono-check{
   border-color:var(--yellow);
-  background:linear-gradient(135deg,rgba(255,184,0,.14),rgba(252,211,77,.08));
-  box-shadow:0 0 0 8px rgba(255,184,0,.06),0 0 40px rgba(255,184,0,.25);
+  background:rgba(255,184,0,.1);
 }
 .confirm-salida svg{stroke:var(--yellow)}
 
@@ -349,60 +271,51 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
   border-radius:50px;
   font-weight:800;
   font-size:clamp(14px, 3.8vw, 16px);
-  animation:etiquetaAparece .6s ease forwards .4s;
+  animation:etiquetaAparece .4s ease forwards .25s;
   opacity:0;
-  transform:translateY(10px);
+  transform:translateY(8px);
 }
 @keyframes etiquetaAparece{to{opacity:1;transform:translateY(0)}}
 
 .confirm-entrada .etiqueta-estado{
   background:linear-gradient(135deg,var(--green),var(--green-dark));
   color:#fff;
-  box-shadow:0 6px 20px rgba(0,168,80,.35);
 }
 .confirm-salida .etiqueta-estado{
   background:linear-gradient(135deg,var(--yellow),var(--yellow-dark));
   color:#000;
-  box-shadow:0 6px 20px rgba(255,184,0,.35);
 }
 
 .mensaje-confirmacion{
-  margin-top:18px;
+  margin-top:16px;
   color:var(--text-dark);
   font-size:clamp(14px, 3.8vw, 15px);
-  line-height:1.6;
-  animation:textoAparece .6s ease forwards .55s;
+  line-height:1.5;
+  animation:textoAparece .4s ease forwards .35s;
   opacity:0;
-  transform:translateY(8px);
+  transform:translateY(6px);
   text-align:center;
 }
 @keyframes textoAparece{to{opacity:1;transform:translateY(0)}}
 
 /* ==============================================
-   ⚠️ MENSAJE DE ERROR — ANIMACIONES PROPIAS
+   ⚠️ ERROR — ANIMACIONES SOLO AQUÍ
    ============================================== */
 .error-icono{
   width:clamp(80px, 20vw, 96px);
   height:clamp(80px, 20vw, 96px);
   border-radius:50%;
   border:4px solid var(--red-error);
-  background:linear-gradient(135deg,rgba(220,38,38,.12),rgba(248,113,113,.06));
-  box-shadow:0 0 0 8px rgba(220,38,38,.06),0 0 40px rgba(220,38,38,.25);
+  background:rgba(220,38,38,.08);
   display:flex;
   align-items:center;
   justify-content:center;
   margin:0 auto 20px;
-  animation:iconoErrorEntrada .7s cubic-bezier(0.34,1.56,0.64,1), sacudir .6s ease .2s;
+  animation:iconoErrorEntrada .5s ease;
 }
 @keyframes iconoErrorEntrada{
   0%{transform:scale(0) rotate(180deg)}
-  60%{transform:scale(1.1) rotate(-8deg)}
   100%{transform:scale(1) rotate(0deg)}
-}
-@keyframes sacudir{
-  0%,100%{transform:translateX(0)}
-  15%,45%,75%{transform:translateX(-6px)}
-  30%,60%,90%{transform:translateX(6px)}
 }
 
 .error-icono svg{
@@ -415,7 +328,7 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
   stroke-linejoin:round;
   stroke-dasharray:60;
   stroke-dashoffset:60;
-  animation:dibujarX .5s ease forwards .4s;
+  animation:dibujarX .4s ease forwards .2s;
 }
 @keyframes dibujarX{to{stroke-dashoffset:0}}
 
@@ -427,21 +340,20 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
   font-size:clamp(14px, 3.8vw, 16px);
   background:linear-gradient(135deg,var(--red-error),var(--red-error-dark));
   color:#fff;
-  box-shadow:0 6px 20px rgba(220,38,38,.35);
-  animation:etiquetaError .6s ease forwards .4s;
+  animation:etiquetaError .4s ease forwards .25s;
   opacity:0;
-  transform:scale(.8);
+  transform:scale(.9);
 }
 @keyframes etiquetaError{to{opacity:1;transform:scale(1)}}
 
 .error-texto{
-  margin-top:18px;
+  margin-top:16px;
   color:var(--red-error-dark);
   font-size:clamp(14px, 3.8vw, 15px);
-  line-height:1.6;
-  animation:textoError .6s ease forwards .55s;
+  line-height:1.5;
+  animation:textoError .4s ease forwards .35s;
   opacity:0;
-  transform:translateY(8px);
+  transform:translateY(6px);
   text-align:center;
 }
 @keyframes textoError{to{opacity:1;transform:translateY(0)}}
@@ -480,12 +392,12 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
 }
 #loader.activo{display:flex}
 .spinner{
-  width:56px;
-  height:56px;
+  width:48px;
+  height:48px;
   border-radius:50%;
   border:4px solid var(--adecco-soft);
   border-top-color:var(--adecco);
-  animation:spin .9s linear infinite;
+  animation:spin .7s linear infinite;
 }
 @keyframes spin{to{transform:rotate(360deg)}}
 
@@ -497,18 +409,12 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
   display:none;
 }
 
-/* Responsive — PANTALLAS PEQUEÑAS */
+/* Responsive */
 @media(max-width: 360px){
   .card{padding:24px 16px; border-radius:24px;}
   .modal-contenido{padding:24px 16px; border-radius:24px;}
   .foto-contenedor, .foto{width:110px; height:110px;}
   input, button{padding:12px; border-radius:14px;}
-}
-
-@media(min-width: 480px){
-  body{padding:24px;}
-  .card{padding:36px 28px;}
-  .modal-contenido{padding:36px 28px;}
 }
 </style>
 </head>
@@ -533,7 +439,7 @@ button:disabled{opacity:.5;cursor:not-allowed;transform:none;box-shadow:none}
   </div>
 </div>
 
-<!-- MODAL ERROR ANIMADO -->
+<!-- MODAL ERROR -->
 <div id="modalError" class="modal">
   <div class="modal-contenido">
     <div class="error-icono">
@@ -603,17 +509,14 @@ const API_URL = "https://script.google.com/macros/s/AKfycbyu5r8QjLQRXEfkCzDgIdtE
 const QR_VALIDO = "RRHH_ASISTENCIA_OK";
 const IMAGEN_POR_DEFECTO = "https://ui-avatars.com/api/?background=E4002B&color=fff&size=130&font-size=0.45&bold=true&name=Adecco";
 
-// ESTADO
 let trabajador = {};
 let tipoActual = "";
 let qr = null;
 let bloqueado = false;
 
-// DISPOSITIVO
 const deviceId = localStorage.getItem("DEVICE_ID") || crypto.randomUUID();
 localStorage.setItem("DEVICE_ID", deviceId);
 
-// ELEMENTOS DEL DOM
 const loader = document.getElementById("loader");
 const dniInput = document.getElementById("dni");
 const p1 = document.getElementById("p1");
@@ -640,14 +543,10 @@ function mostrarCargando(mostrar = true) {
   loader.classList.toggle("activo", mostrar);
 }
 
-// ✅ ERROR ANIMADO — VENTANA PROPIA CON ANIMACIONES
 function mostrarError(mensaje) {
   textoError.textContent = mensaje;
   modalError.classList.add("activo");
-  // Cerrar automáticamente después de 3 segundos
-  setTimeout(() => {
-    modalError.classList.remove("activo");
-  }, 3000);
+  setTimeout(() => modalError.classList.remove("activo"), 3000);
   dniInput.focus();
 }
 
@@ -660,33 +559,23 @@ function bloquearBotones(activar = true) {
 // ==============================================
 async function buscar() {
   const dni = dniInput.value.trim();
-  
   if (dni.length !== 8) {
     mostrarError("Ingrese un DNI válido de 8 dígitos");
     return;
   }
-
   mostrarCargando(true);
   bloquearBotones(true);
-
   try {
     const params = new URLSearchParams({ action: "buscar", dni });
     const respuesta = await fetch(API_URL, { method: "POST", body: params });
     const datos = await respuesta.json();
-
-    if (!datos.ok) {
-      throw new Error(datos.mensaje || "No se encontró el trabajador");
-    }
-
+    if (!datos.ok) throw new Error(datos.mensaje || "No se encontró el trabajador");
     trabajador = datos.data;
-    
-    // Mostrar pantalla de datos
     p1.style.display = "none";
     p2.style.display = "block";
     nombreEl.textContent = trabajador.nombre || "Sin nombre";
     cargoEl.textContent = trabajador.cargo || "";
     fotoEl.src = trabajador.foto?.trim() || IMAGEN_POR_DEFECTO;
-
   } catch (err) {
     mostrarError(err.message);
   } finally {
@@ -696,11 +585,10 @@ async function buscar() {
 }
 
 // ==============================================
-// ESCANEO QR
+// ESCÁNER QR — OPTIMIZADO ✅
 // ==============================================
 async function abrirQR(tipo) {
   if (bloqueado) return;
-
   tipoActual = tipo;
   tipoTitulo.textContent = "📷 Escanear QR — " + tipo;
   qrModal.classList.add("activo");
@@ -713,9 +601,15 @@ async function abrirQR(tipo) {
       await qr.stop();
     }
 
+    // 🚀 CONFIGURACIÓN OPTIMIZADA PARA VELOCIDAD
     await qr.start(
       { facingMode: "environment" },
-      { fps: 8, qrbox: 200 },
+      { 
+        fps: 18,                // Más fotogramas = más fluido
+        qrbox: { width: 180, height: 180 }, // Área menor = procesa menos
+        aspectRatio: 1.0,
+        disableFlip: true       // No invierte imagen = más rápido
+      },
       manejarCodigoQR
     );
   } catch (err) {
@@ -735,7 +629,7 @@ async function cerrarQR() {
   if (qr?.isScanning) {
     try { await qr.stop(); } catch {}
   }
-  setTimeout(() => bloqueado = false, 500);
+  setTimeout(() => bloqueado = false, 300);
 }
 
 // ==============================================
@@ -743,41 +637,21 @@ async function cerrarQR() {
 // ==============================================
 async function registrar() {
   mostrarCargando(true);
-
-  const opcionesGPS = {
-    enableHighAccuracy: true,
-    timeout: 10000,
-    maximumAge: 300000
-  };
-
+  const opcionesGPS = { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 };
   try {
     const posicion = await new Promise((resolve, reject) => {
       navigator.geolocation.getCurrentPosition(resolve, reject, opcionesGPS);
     });
-
     const { latitude: lat, longitude: lng } = posicion.coords;
-
     const params = new URLSearchParams({
-      action: "registrar",
-      dni: trabajador.dni,
-      nombre: trabajador.nombre,
-      cargo: trabajador.cargo,
-      tipo: tipoActual,
-      lat, lng,
-      deviceId,
-      qr: QR_VALIDO
+      action: "registrar", dni: trabajador.dni, nombre: trabajador.nombre,
+      cargo: trabajador.cargo, tipo: tipoActual, lat, lng, deviceId, qr: QR_VALIDO
     });
-
     const respuesta = await fetch(API_URL, { method: "POST", body: params });
     const datos = await respuesta.json();
-
-    if (!datos.ok) {
-      throw new Error(datos.mensaje || "No se pudo registrar");
-    }
-
+    if (!datos.ok) throw new Error(datos.mensaje || "No se pudo registrar");
     mostrarConfirmacion(tipoActual, datos.mensaje || "Registrado correctamente");
-    setTimeout(() => location.reload(), 3200);
-
+    setTimeout(() => location.reload(), 3000);
   } catch (err) {
     mostrarError(err.message);
     bloqueado = false;
@@ -787,7 +661,7 @@ async function registrar() {
 }
 
 // ==============================================
-// ✅ CONFIRMACIÓN ANIMADA
+// CONFIRMACIÓN
 // ==============================================
 function mostrarConfirmacion(tipo, mensaje) {
   const esEntrada = tipo === "ENTRADA";
@@ -799,16 +673,13 @@ function mostrarConfirmacion(tipo, mensaje) {
 }
 
 // ==============================================
-// RELOJ EN TIEMPO REAL
+// RELOJ
 // ==============================================
 function actualizarReloj() {
   const fecha = new Date();
   horaEl.textContent = fecha.toLocaleTimeString("es-PE");
   fechaEl.textContent = fecha.toLocaleDateString("es-PE", {
-    weekday: "long",
-    day: "numeric",
-    month: "long",
-    year: "numeric"
+    weekday: "long", day: "numeric", month: "long", year: "numeric"
   });
 }
 setInterval(actualizarReloj, 1000);
@@ -823,7 +694,6 @@ window.addEventListener("beforeinstallprompt", (e) => {
   deferredPrompt = e;
   installBtn.style.display = "block";
 });
-
 installBtn.addEventListener("click", async () => {
   if (!deferredPrompt) return;
   installBtn.style.display = "none";
@@ -837,10 +707,9 @@ installBtn.addEventListener("click", async () => {
 if ("serviceWorker" in navigator) {
   window.addEventListener("load", async () => {
     try {
-      const registro = await navigator.serviceWorker.register("sw.js");
-      console.log("✅ Service Worker registrado");
+      await navigator.serviceWorker.register("sw.js");
     } catch (err) {
-      console.warn("⚠️ Service Worker no disponible:", err);
+      console.warn("Service Worker no disponible");
     }
   });
 }
