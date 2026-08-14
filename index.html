@@ -223,7 +223,7 @@ display:none;
 
 <script>
 /* ===== TU LOGICA ORIGINAL ===== */
-const API_URL="https://script.google.com/macros/s/AKfycbzxIxF3PeS-khRgdrizzPoD2d1nutQg8dAP6TbBE986EI-JpeT4z5LxQBNMAKk6j30/exec";
+const API_URL="https://script.google.com/macros/s/AKfycbwsxPcaqwF4kUY0P4vRnPP0-A1KxPULuU39bi4nQdi6xNHwqESnkO-oV9f_kH4Sdodh/exec";
 const QR_VALIDO="RRHH_ASISTENCIA_OK";
 let trabajador={},tipoActual="",qr=null,bloqueado=false;
 
@@ -276,31 +276,55 @@ qr?.stop().catch(()=>{});
 function registrar(){
 loader.style.display="flex";
 
-navigator.geolocation.getCurrentPosition(p=>{
-fetch(API_URL,{method:"POST",body:new URLSearchParams({
-action:"registrar",
-dni:trabajador.dni,
-nombre:trabajador.nombre,
-cargo:trabajador.cargo,
-tipo:tipoActual,
-lat:p.coords.latitude,
-lng:p.coords.longitude,
-deviceId,
-qr:QR_VALIDO
-})})
-.then(r=>r.json())
-.then(r=>{
-loader.style.display="none";
-mostrarConfirmacion(tipoActual,r.mensaje);
-setTimeout(()=>location.reload(),2200);
-});
-});
-}
+  // ⏱️ GPS con límite de 5 segundos
+  const opciones = {
+    enableHighAccuracy: false, // ⚡ Cambiado a false = más rápido
+    timeout: 5000,             // ⏱️ Máximo 5 segundos
+    maximumAge: 300000         // 📍 Usar ubicación reciente si existe
+  };
 
-function mostrarConfirmacion(tipo,msg){
-confirmBox.className="confirm "+(tipo==="ENTRADA"?"entrada":"salida");
-badgeTexto.innerText=msg;
-confirmacion.style.display="flex";
+  navigator.geolocation.getCurrentPosition(
+    function(p){
+      // ✅ Éxito
+      fetch(API_URL,{
+        method:"POST",
+        body:new URLSearchParams({
+          action:"registrar",
+          dni:trabajador.dni,
+          nombre:trabajador.nombre,
+          cargo:trabajador.cargo,
+          tipo:tipoActual,
+          lat:p.coords.latitude,
+          lng:p.coords.longitude,
+          deviceId,
+          qr:QR_VALIDO
+        })
+      })
+      .then(r=>r.json())
+      .then(r=>{
+        loader.style.display="none";
+        if(!r.ok){
+          alert(r.mensaje || "Error al registrar");
+          return;
+        }
+        mostrarConfirmacion(tipoActual,r.mensaje);
+        setTimeout(()=>location.reload(),2200);
+      })
+      .catch(err=>{
+        loader.style.display="none";
+        alert("Error de conexión. Intenta de nuevo.");
+      });
+    },
+    function(err){
+      // ❌ Error o tiempo agotado
+      loader.style.display="none";
+      let mensaje = "No se pudo obtener la ubicación. ";
+      if(err.code === 3) mensaje += "Tiempo agotado. Activa tu GPS.";
+      else if(err.code === 1) mensaje += "Permiso denegado.";
+      alert(mensaje);
+    },
+    opciones
+  );
 }
 
 function actualizarReloj(){
