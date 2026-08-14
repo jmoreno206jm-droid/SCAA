@@ -6,13 +6,11 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <meta name="theme-color" content="#E4002B">
 
-<!-- PWA -->
 <link rel="manifest" href="manifest.json">
 <link rel="apple-touch-icon" href="icon-192.png">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
-<!-- Librería QR -->
 <script src="https://unpkg.com/html5-qrcode"></script>
 
 <style>
@@ -35,403 +33,98 @@
   --text-muted:#6B7280;
 }
 
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-  font-family:"Segoe UI",system-ui,-apple-system,sans-serif;
-}
+*{margin:0;padding:0;box-sizing:border-box;font-family:"Segoe UI",system-ui,-apple-system,sans-serif;}
+html,body{width:100%;min-height:100vh;}
+body{display:flex;align-items:center;justify-content:center;background:linear-gradient(180deg,var(--adecco) 0%,var(--adecco-dark) 100%);padding:16px;position:relative;overflow-x:hidden;}
 
-html, body {
-  width: 100%;
-  min-height: 100vh;
-}
+.card{width:100%;max-width:400px;background:var(--white);border-radius:32px;padding:28px 20px;box-shadow:0 25px 80px rgba(0,0,0,.35);position:relative;z-index:1;margin:0 auto;}
 
-body{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:linear-gradient(180deg,var(--adecco) 0%,var(--adecco-dark) 100%);
-  padding: 16px;
-  position:relative;
-  overflow-x:hidden;
-}
-
-/* Tarjeta principal — SIN animaciones, máxima velocidad */
-.card{
-  width: 100%;
-  max-width: 400px;
-  background:var(--white);
-  border-radius:32px;
-  padding: 28px 20px;
-  box-shadow:0 25px 80px rgba(0,0,0,.35);
-  position:relative;
-  z-index:1;
-  margin: 0 auto;
-}
-
-/* Logo Adecco — SIN animación */
-.logo-contenedor{
-  text-align:center;
-  margin-bottom:24px;
-}
-.logo-adecco{
-  font-size:clamp(32px, 8vw, 42px);
-  font-weight:900;
-  letter-spacing:-1px;
-  color:var(--adecco);
-  position:relative;
-  display:inline-block;
-}
+.logo-contenedor{text-align:center;margin-bottom:24px;}
+.logo-adecco{font-size:clamp(32px,8vw,42px);font-weight:900;letter-spacing:-1px;color:var(--adecco);position:relative;display:inline-block;}
 .logo-adecco span{color:var(--adecco-dark)}
-.subtitulo{
-  text-align:center;
-  color:var(--text-muted);
-  font-size:clamp(13px, 3.5vw, 15px);
-  margin-top:8px;
-}
+.subtitulo{text-align:center;color:var(--text-muted);font-size:clamp(13px,3.5vw,15px);margin-top:8px;}
 
-/* Inputs */
-input{
-  width:100%;
-  padding:14px 16px;
-  border-radius:16px;
-  border:2px solid var(--gray-200);
-  text-align:center;
-  font-size:clamp(16px, 4vw, 17px);
-  background:var(--gray-50);
-  margin-bottom:14px;
-  transition: border-color .2s ease, box-shadow .2s ease;
-}
-input:focus{
-  outline:none;
-  border-color:var(--adecco);
-  background:var(--white);
-  box-shadow:0 0 0 4px rgba(228,0,43,.1);
-}
+input{width:100%;padding:14px 16px;border-radius:16px;border:2px solid var(--gray-200);text-align:center;font-size:clamp(16px,4vw,17px);background:var(--gray-50);margin-bottom:14px;transition:border-color .2s ease,box-shadow .2s ease;}
+input:focus{outline:none;border-color:var(--adecco);background:var(--white);box-shadow:0 0 0 4px rgba(228,0,43,.1);}
 
-/* Botones — Transiciones suaves pero ligeras */
-button{
-  width:100%;
-  padding:14px;
-  border:none;
-  border-radius:16px;
-  font-size:clamp(15px, 3.8vw, 16px);
-  font-weight:700;
-  cursor:pointer;
-  transition: transform .15s ease;
-  letter-spacing:.3px;
-}
+button{width:100%;padding:14px;border:none;border-radius:16px;font-size:clamp(15px,3.8vw,16px);font-weight:700;cursor:pointer;transition:transform .15s ease;letter-spacing:.3px;}
 button:active{transform:scale(.97)}
 button:disabled{opacity:.5;cursor:not-allowed}
 
-.btn-buscar{
-  background:linear-gradient(135deg,var(--adecco),var(--adecco-dark));
-  color:var(--white);
-}
-.btn-entrada{
-  background:linear-gradient(135deg,var(--green),var(--green-dark));
-  color:var(--white);
-  margin-bottom:12px;
-}
-.btn-salida{
-  background:linear-gradient(135deg,var(--yellow),var(--yellow-dark));
-  color:#000;
-}
-.btn-cancelar{
-  background:var(--gray-100);
-  color:var(--text-dark);
-  margin-top:10px;
-}
+.btn-buscar{background:linear-gradient(135deg,var(--adecco),var(--adecco-dark));color:var(--white);}
+.btn-entrada{background:linear-gradient(135deg,var(--green),var(--green-dark));color:var(--white);margin-bottom:12px;}
+.btn-salida{background:linear-gradient(135deg,var(--yellow),var(--yellow-dark));color:#000;}
+.btn-cancelar{background:var(--gray-100);color:var(--text-dark);margin-top:10px;}
 
-/* Foto de perfil */
-.foto-contenedor{
-  position:relative;
-  width:130px;
-  height:130px;
-  margin:0 auto 16px;
-}
-.foto{
-  width:130px;
-  height:130px;
-  border-radius:50%;
-  object-fit:cover;
-  border:5px solid var(--adecco);
-  box-shadow:0 0 0 4px var(--adecco-soft);
-  background:var(--gray-100);
-}
+.foto-contenedor{position:relative;width:130px;height:130px;margin:0 auto 16px;}
+.foto{width:130px;height:130px;border-radius:50%;object-fit:cover;border:5px solid var(--adecco);box-shadow:0 0 0 4px var(--adecco-soft);background:var(--gray-100);}
 
-/* Datos del empleado */
-.nombre{
-  font-size:clamp(18px, 5vw, 20px);
-  font-weight:800;
-  color:var(--text-dark);
-  text-align:center;
-  margin-bottom:4px;
-}
-.cargo{
-  text-align:center;
-  color:var(--text-muted);
-  font-size:clamp(14px, 3.8vw, 15px);
-  margin-bottom:16px;
-}
+.nombre{font-size:clamp(18px,5vw,20px);font-weight:800;color:var(--text-dark);text-align:center;margin-bottom:4px;}
+.cargo{text-align:center;color:var(--text-muted);font-size:clamp(14px,3.8vw,15px);margin-bottom:16px;}
 
-/* Reloj y fecha — SIN animación */
-.reloj{
-  text-align:center;
-  font-size:clamp(28px, 7vw, 32px);
-  font-weight:900;
-  color:var(--adecco);
-  letter-spacing:1px;
-}
-.fecha{
-  text-align:center;
-  color:var(--text-muted);
-  font-size:clamp(13px, 3.5vw, 14px);
-  margin-bottom:20px;
-}
+.reloj{text-align:center;font-size:clamp(28px,7vw,32px);font-weight:900;color:var(--adecco);letter-spacing:1px;}
+.fecha{text-align:center;color:var(--text-muted);font-size:clamp(13px,3.5vw,14px);margin-bottom:20px;}
 
-/* ==============================================
-   MODALES — SOLO AQUÍ VAN LAS ANIMACIONES ✅
-   ============================================== */
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(0,0,0,.55);
-  backdrop-filter:blur(8px);
-  justify-content:center;
-  align-items:center;
-  z-index:100;
-  padding: 16px;
-  animation:fadeIn .2s ease;
-}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);backdrop-filter:blur(8px);justify-content:center;align-items:center;z-index:100;padding:16px;animation:fadeIn .2s ease;}
 .modal.activo{display:flex}
 @keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-.modal-contenido{
-  background:var(--white);
-  border-radius:28px;
-  padding: 28px 20px;
-  width:100%;
-  max-width:340px;
-  box-shadow:0 35px 90px rgba(0,0,0,.4);
-  animation:modalEntrada .35s ease;
-  margin: 0 auto;
-}
-@keyframes modalEntrada{
-  from{opacity:0;transform:scale(.9)}
-  to{opacity:1;transform:scale(1)}
-}
+.modal-contenido{background:var(--white);border-radius:28px;padding:28px 20px;width:100%;max-width:340px;box-shadow:0 35px 90px rgba(0,0,0,.4);animation:modalEntrada .35s ease;margin:0 auto;}
+@keyframes modalEntrada{from{opacity:0;transform:scale(.9)}to{opacity:1;transform:scale(1)}}
 
-/* ==============================================
-   ✅ CONFIRMACIÓN — ANIMACIONES SOLO AQUÍ
-   ============================================== */
-.icono-check{
-  width:clamp(80px, 20vw, 96px);
-  height:clamp(80px, 20vw, 96px);
-  border-radius:50%;
-  border:4px solid;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:0 auto 20px;
-  animation:iconoRebote .5s cubic-bezier(0.34,1.56,0.64,1);
-}
-@keyframes iconoRebote{
-  0%{transform:scale(0)}
-  70%{transform:scale(1.1)}
-  100%{transform:scale(1)}
-}
-.icono-check svg{
-  width:clamp(44px, 11vw, 52px);
-  height:clamp(44px, 11vw, 52px);
-  fill:none;
-  stroke-width:4;
-  stroke-dasharray:100;
-  stroke-dashoffset:100;
-  animation:dibujarCheck .4s ease forwards .2s;
-}
+.icono-check{width:clamp(80px,20vw,96px);height:clamp(80px,20vw,96px);border-radius:50%;border:4px solid;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:iconoRebote .5s cubic-bezier(0.34,1.56,0.64,1);}
+@keyframes iconoRebote{0%{transform:scale(0)}70%{transform:scale(1.1)}100%{transform:scale(1)}}
+.icono-check svg{width:clamp(44px,11vw,52px);height:clamp(44px,11vw,52px);fill:none;stroke-width:4;stroke-dasharray:100;stroke-dashoffset:100;animation:dibujarCheck .4s ease forwards .2s;}
 @keyframes dibujarCheck{to{stroke-dashoffset:0}}
 
-.confirm-entrada .icono-check{
-  border-color:var(--green);
-  background:rgba(0,168,80,.08);
-}
+.confirm-entrada .icono-check{border-color:var(--green);background:rgba(0,168,80,.08);}
 .confirm-entrada svg{stroke:var(--green)}
-.confirm-salida .icono-check{
-  border-color:var(--yellow);
-  background:rgba(255,184,0,.1);
-}
+.confirm-salida .icono-check{border-color:var(--yellow);background:rgba(255,184,0,.1);}
 .confirm-salida svg{stroke:var(--yellow)}
 
-.etiqueta-estado{
-  display:inline-block;
-  padding:12px 24px;
-  border-radius:50px;
-  font-weight:800;
-  font-size:clamp(14px, 3.8vw, 16px);
-  animation:etiquetaAparece .4s ease forwards .25s;
-  opacity:0;
-  transform:translateY(8px);
-}
+.etiqueta-estado{display:inline-block;padding:12px 24px;border-radius:50px;font-weight:800;font-size:clamp(14px,3.8vw,16px);animation:etiquetaAparece .4s ease forwards .25s;opacity:0;transform:translateY(8px);}
 @keyframes etiquetaAparece{to{opacity:1;transform:translateY(0)}}
+.confirm-entrada .etiqueta-estado{background:linear-gradient(135deg,var(--green),var(--green-dark));color:#fff;}
+.confirm-salida .etiqueta-estado{background:linear-gradient(135deg,var(--yellow),var(--yellow-dark));color:#000;}
 
-.confirm-entrada .etiqueta-estado{
-  background:linear-gradient(135deg,var(--green),var(--green-dark));
-  color:#fff;
-}
-.confirm-salida .etiqueta-estado{
-  background:linear-gradient(135deg,var(--yellow),var(--yellow-dark));
-  color:#000;
-}
-
-.mensaje-confirmacion{
-  margin-top:16px;
-  color:var(--text-dark);
-  font-size:clamp(14px, 3.8vw, 15px);
-  line-height:1.5;
-  animation:textoAparece .4s ease forwards .35s;
-  opacity:0;
-  transform:translateY(6px);
-  text-align:center;
-}
+.mensaje-confirmacion{margin-top:16px;color:var(--text-dark);font-size:clamp(14px,3.8vw,15px);line-height:1.5;animation:textoAparece .4s ease forwards .35s;opacity:0;transform:translateY(6px);text-align:center;}
 @keyframes textoAparece{to{opacity:1;transform:translateY(0)}}
 
-/* ==============================================
-   ⚠️ ERROR — ANIMACIONES SOLO AQUÍ
-   ============================================== */
-.error-icono{
-  width:clamp(80px, 20vw, 96px);
-  height:clamp(80px, 20vw, 96px);
-  border-radius:50%;
-  border:4px solid var(--red-error);
-  background:rgba(220,38,38,.08);
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  margin:0 auto 20px;
-  animation:iconoErrorEntrada .5s ease;
-}
-@keyframes iconoErrorEntrada{
-  0%{transform:scale(0) rotate(180deg)}
-  100%{transform:scale(1) rotate(0deg)}
-}
-
-.error-icono svg{
-  width:clamp(36px, 9vw, 44px);
-  height:clamp(36px, 9vw, 44px);
-  stroke:var(--red-error);
-  stroke-width:4;
-  fill:none;
-  stroke-linecap:round;
-  stroke-linejoin:round;
-  stroke-dasharray:60;
-  stroke-dashoffset:60;
-  animation:dibujarX .4s ease forwards .2s;
-}
+.error-icono{width:clamp(80px,20vw,96px);height:clamp(80px,20vw,96px);border-radius:50%;border:4px solid var(--red-error);background:rgba(220,38,38,.08);display:flex;align-items:center;justify-content:center;margin:0 auto 20px;animation:iconoErrorEntrada .5s ease;}
+@keyframes iconoErrorEntrada{0%{transform:scale(0) rotate(180deg)}100%{transform:scale(1) rotate(0deg)}}
+.error-icono svg{width:clamp(36px,9vw,44px);height:clamp(36px,9vw,44px);stroke:var(--red-error);stroke-width:4;fill:none;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:60;stroke-dashoffset:60;animation:dibujarX .4s ease forwards .2s;}
 @keyframes dibujarX{to{stroke-dashoffset:0}}
-
-.error-etiqueta{
-  display:inline-block;
-  padding:12px 24px;
-  border-radius:50px;
-  font-weight:800;
-  font-size:clamp(14px, 3.8vw, 16px);
-  background:linear-gradient(135deg,var(--red-error),var(--red-error-dark));
-  color:#fff;
-  animation:etiquetaError .4s ease forwards .25s;
-  opacity:0;
-  transform:scale(.9);
-}
+.error-etiqueta{display:inline-block;padding:12px 24px;border-radius:50px;font-weight:800;font-size:clamp(14px,3.8vw,16px);background:linear-gradient(135deg,var(--red-error),var(--red-error-dark));color:#fff;animation:etiquetaError .4s ease forwards .25s;opacity:0;transform:scale(.9);}
 @keyframes etiquetaError{to{opacity:1;transform:scale(1)}}
-
-.error-texto{
-  margin-top:16px;
-  color:var(--red-error-dark);
-  font-size:clamp(14px, 3.8vw, 15px);
-  line-height:1.5;
-  animation:textoError .4s ease forwards .35s;
-  opacity:0;
-  transform:translateY(6px);
-  text-align:center;
-}
+.error-texto{margin-top:16px;color:var(--red-error-dark);font-size:clamp(14px,3.8vw,15px);line-height:1.5;animation:textoError .4s ease forwards .35s;opacity:0;transform:translateY(6px);text-align:center;}
 @keyframes textoError{to{opacity:1;transform:translateY(0)}}
 
-/* Escáner QR */
-.titulo-qr{
-  text-align:center;
-  color:var(--text-dark);
-  font-size:clamp(16px, 4.2vw, 18px);
-  font-weight:700;
-  margin-bottom:16px;
-}
-#reader{
-  width:100%;
-  max-width:260px;
-  margin:0 auto;
-  border-radius:16px;
-  overflow:hidden;
-}
-.texto-ayuda{
-  text-align:center;
-  font-size:clamp(12px, 3.2vw, 13px);
-  color:var(--text-muted);
-  margin:12px 0;
-}
+.titulo-qr{text-align:center;color:var(--text-dark);font-size:clamp(16px,4.2vw,18px);font-weight:700;margin-bottom:16px;}
+#reader{width:100%;max-width:260px;margin:0 auto;border-radius:16px;overflow:hidden;}
+.texto-ayuda{text-align:center;font-size:clamp(12px,3.2vw,13px);color:var(--text-muted);margin:12px 0;}
 
-/* Loader */
-#loader{
-  display:none;
-  position:fixed;
-  inset:0;
-  background:rgba(255,255,255,.92);
-  justify-content:center;
-  align-items:center;
-  z-index:200;
-}
+#loader{display:none;position:fixed;inset:0;background:rgba(255,255,255,.92);justify-content:center;align-items:center;z-index:200;}
 #loader.activo{display:flex}
-.spinner{
-  width:48px;
-  height:48px;
-  border-radius:50%;
-  border:4px solid var(--adecco-soft);
-  border-top-color:var(--adecco);
-  animation:spin .7s linear infinite;
-}
+.spinner{width:48px;height:48px;border-radius:50%;border:4px solid var(--adecco-soft);border-top-color:var(--adecco);animation:spin .7s linear infinite;}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* Botón instalar */
-#installBtn{
-  margin-top:16px;
-  background:#1F2937;
-  color:#fff;
-  display:none;
-}
+#installBtn{margin-top:16px;background:#1F2937;color:#fff;display:none;}
 
-/* Responsive */
-@media(max-width: 360px){
-  .card{padding:24px 16px; border-radius:24px;}
-  .modal-contenido{padding:24px 16px; border-radius:24px;}
-  .foto-contenedor, .foto{width:110px; height:110px;}
-  input, button{padding:12px; border-radius:14px;}
+@media(max-width:360px){
+  .card{padding:24px 16px;border-radius:24px;}
+  .modal-contenido{padding:24px 16px;border-radius:24px;}
+  .foto-contenedor,.foto{width:110px;height:110px;}
+  input,button{padding:12px;border-radius:14px;}
 }
 </style>
 </head>
 
 <body>
-
-<!-- LOADER -->
 <div id="loader"><div class="spinner"></div></div>
 
-<!-- MODAL CONFIRMACIÓN -->
 <div id="confirmacion" class="modal">
   <div id="confirmBox" class="modal-contenido">
-    <div class="icono-check">
-      <svg viewBox="0 0 52 52">
-        <path d="M14 27 L23 36 L38 16"/>
-      </svg>
-    </div>
+    <div class="icono-check"><svg viewBox="0 0 52 52"><path d="M14 27 L23 36 L38 16"/></svg></div>
     <div style="text-align:center">
       <div id="etiquetaEstado" class="etiqueta-estado"></div>
       <p id="mensajeConfirmacion" class="mensaje-confirmacion"></p>
@@ -439,15 +132,9 @@ button:disabled{opacity:.5;cursor:not-allowed}
   </div>
 </div>
 
-<!-- MODAL ERROR -->
 <div id="modalError" class="modal">
   <div class="modal-contenido">
-    <div class="error-icono">
-      <svg viewBox="0 0 24 24">
-        <line x1="18" y1="6" x2="6" y2="18"></line>
-        <line x1="6" y1="6" x2="18" y2="18"></line>
-      </svg>
-    </div>
+    <div class="error-icono"><svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></div>
     <div style="text-align:center">
       <div class="error-etiqueta">⚠️ ERROR</div>
       <p id="textoError" class="error-texto"></p>
@@ -455,7 +142,6 @@ button:disabled{opacity:.5;cursor:not-allowed}
   </div>
 </div>
 
-<!-- MODAL ESCANEO QR -->
 <div id="qrModal" class="modal">
   <div class="modal-contenido">
     <h3 id="tipoTitulo" class="titulo-qr"></h3>
@@ -465,30 +151,19 @@ button:disabled{opacity:.5;cursor:not-allowed}
   </div>
 </div>
 
-<!-- PANTALLA PRINCIPAL -->
 <div class="card">
   <div class="logo-contenedor">
     <div class="logo-adecco">A<span>D</span>ECCO</div>
     <p class="subtitulo">Sistema de Registro de Asistencia</p>
   </div>
 
-  <!-- PASO 1: INGRESAR DNI -->
   <div id="p1">
-    <input 
-      id="dni" 
-      placeholder="Ingrese su número de DNI" 
-      maxlength="8" 
-      inputmode="numeric"
-      onkeypress="if(event.key==='Enter') buscar()"
-    >
+    <input id="dni" placeholder="Ingrese su número de DNI" maxlength="8" inputmode="numeric" onkeypress="if(event.key==='Enter') buscar()">
     <button id="btnBuscar" class="btn-buscar" onclick="buscar()">🔍 Buscar Empleado</button>
   </div>
 
-  <!-- PASO 2: DATOS DEL TRABAJADOR -->
   <div id="p2" style="display:none;">
-    <div class="foto-contenedor">
-      <img id="foto" class="foto" alt="Foto del empleado">
-    </div>
+    <div class="foto-contenedor"><img id="foto" class="foto" alt="Foto del empleado"></div>
     <h3 id="nombre" class="nombre"></h3>
     <p id="cargo" class="cargo"></p>
     <div class="reloj" id="hora"></div>
@@ -497,15 +172,11 @@ button:disabled{opacity:.5;cursor:not-allowed}
     <button id="btnSalida" class="btn-salida" onclick="abrirQR('SALIDA')">⏰ Registrar SALIDA</button>
   </div>
 
-  <!-- BOTÓN INSTALAR APP -->
   <button id="installBtn">📲 Instalar App</button>
 </div>
 
 <script>
-// ==============================================
-// CONFIGURACIÓN
-// ==============================================
-const API_URL = "https://script.google.com/macros/s/AKfycbyu5r8QjLQRXEfkCzDgIdtEd6Kgn4lGwRCr57bTy10DVI45PHNB-jlVXeibBEWBOox3/exec";
+const API_URL = "https://script.google.com/macros/s/AKfycby1P3gaJk6O4r51k-nMjhbwZt8L4_oT3BuDJwzdWswnOUWr4WQriT9Xf-O9739ATeCd/exec";
 const QR_VALIDO = "RRHH_ASISTENCIA_OK";
 const IMAGEN_POR_DEFECTO = "https://ui-avatars.com/api/?background=E4002B&color=fff&size=130&font-size=0.45&bold=true&name=Adecco";
 
@@ -536,38 +207,26 @@ const modalError = document.getElementById("modalError");
 const textoError = document.getElementById("textoError");
 const installBtn = document.getElementById("installBtn");
 
-// ==============================================
-// FUNCIONES AUXILIARES
-// ==============================================
-function mostrarCargando(mostrar = true) {
-  loader.classList.toggle("activo", mostrar);
-}
-
+function mostrarCargando(mostrar = true) { loader.classList.toggle("activo", mostrar); }
 function mostrarError(mensaje) {
   textoError.textContent = mensaje;
   modalError.classList.add("activo");
-  setTimeout(() => modalError.classList.remove("activo"), 3000);
-  dniInput.focus();
+  setTimeout(() => modalError.classList.remove("activo"), 3500);
+  dniInput?.focus();
 }
+function bloquearBotones(activar = true) { document.querySelectorAll("button").forEach(btn => btn.disabled = activar); }
 
-function bloquearBotones(activar = true) {
-  document.querySelectorAll("button").forEach(btn => btn.disabled = activar);
-}
-
-// ==============================================
-// BUSCAR TRABAJADOR
-// ==============================================
 async function buscar() {
   const dni = dniInput.value.trim();
-  if (dni.length !== 8) {
-    mostrarError("Ingrese un DNI válido de 8 dígitos");
-    return;
-  }
+  if (dni.length !== 8) { mostrarError("Ingrese un DNI válido de 8 dígitos"); return; }
   mostrarCargando(true);
   bloquearBotones(true);
   try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 45000);
     const params = new URLSearchParams({ action: "buscar", dni });
-    const respuesta = await fetch(API_URL, { method: "POST", body: params });
+    const respuesta = await fetch(API_URL, { method: "POST", body: params, signal: controller.signal });
+    clearTimeout(timeoutId);
     const datos = await respuesta.json();
     if (!datos.ok) throw new Error(datos.mensaje || "No se encontró el trabajador");
     trabajador = datos.data;
@@ -577,143 +236,88 @@ async function buscar() {
     cargoEl.textContent = trabajador.cargo || "";
     fotoEl.src = trabajador.foto?.trim() || IMAGEN_POR_DEFECTO;
   } catch (err) {
-    mostrarError(err.message);
-  } finally {
-    mostrarCargando(false);
-    bloquearBotones(false);
-  }
+    let mensaje = err.message;
+    if (err.name === "AbortError") mensaje = "⏳ El servidor tardó mucho. Intenta de nuevo.";
+    mostrarError(mensaje);
+  } finally { mostrarCargando(false); bloquearBotones(false); }
 }
 
-// ==============================================
-// ESCÁNER QR — OPTIMIZADO ✅
-// ==============================================
 async function abrirQR(tipo) {
   if (bloqueado) return;
   tipoActual = tipo;
   tipoTitulo.textContent = "📷 Escanear QR — " + tipo;
   qrModal.classList.add("activo");
   bloqueado = true;
-
   try {
-    if (!qr) {
-      qr = new Html5Qrcode("reader");
-    } else if (qr.isScanning) {
-      await qr.stop();
-    }
-
-    // 🚀 CONFIGURACIÓN OPTIMIZADA PARA VELOCIDAD
+    if (!qr) qr = new Html5Qrcode("reader");
+    else if (qr.isScanning) await qr.stop();
     await qr.start(
       { facingMode: "environment" },
-      { 
-        fps: 18,                // Más fotogramas = más fluido
-        qrbox: { width: 180, height: 180 }, // Área menor = procesa menos
-        aspectRatio: 1.0,
-        disableFlip: true       // No invierte imagen = más rápido
-      },
+      { fps: 18, qrbox: { width: 180, height: 180 }, aspectRatio: 1.0, disableFlip: true },
       manejarCodigoQR
     );
-  } catch (err) {
-    mostrarError("No se pudo acceder a la cámara. Verifique los permisos.");
-    cerrarQR();
-  }
+  } catch (err) { mostrarError("No se pudo acceder a la cámara"); cerrarQR(); }
 }
-
-function manejarCodigoQR(textoEscaneado) {
-  if (textoEscaneado !== QR_VALIDO) return;
-  cerrarQR();
-  registrar();
-}
-
+function manejarCodigoQR(texto) { if (texto === QR_VALIDO) { cerrarQR(); registrar(); } }
 async function cerrarQR() {
   qrModal.classList.remove("activo");
-  if (qr?.isScanning) {
-    try { await qr.stop(); } catch {}
-  }
+  if (qr?.isScanning) try { await qr.stop(); } catch {}
   setTimeout(() => bloqueado = false, 300);
 }
 
-// ==============================================
-// REGISTRAR ASISTENCIA + GPS
-// ==============================================
 async function registrar() {
   mostrarCargando(true);
-  const opcionesGPS = { enableHighAccuracy: true, timeout: 10000, maximumAge: 300000 };
+  const opcionesGPS = { enableHighAccuracy: false, timeout: 12000, maximumAge: 300000 };
   try {
-    const posicion = await new Promise((resolve, reject) => {
-      navigator.geolocation.getCurrentPosition(resolve, reject, opcionesGPS);
-    });
-    const { latitude: lat, longitude: lng } = posicion.coords;
+    let lat = "0", lng = "0";
+    try {
+      const pos = await new Promise((res, rej) => navigator.geolocation.getCurrentPosition(res, rej, opcionesGPS));
+      lat = pos.coords.latitude; lng = pos.coords.longitude;
+    } catch {}
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 45000);
     const params = new URLSearchParams({
       action: "registrar", dni: trabajador.dni, nombre: trabajador.nombre,
       cargo: trabajador.cargo, tipo: tipoActual, lat, lng, deviceId, qr: QR_VALIDO
     });
-    const respuesta = await fetch(API_URL, { method: "POST", body: params });
+    const respuesta = await fetch(API_URL, { method: "POST", body: params, signal: controller.signal });
+    clearTimeout(timeoutId);
     const datos = await respuesta.json();
     if (!datos.ok) throw new Error(datos.mensaje || "No se pudo registrar");
     mostrarConfirmacion(tipoActual, datos.mensaje || "Registrado correctamente");
-    setTimeout(() => location.reload(), 3000);
+    setTimeout(() => location.reload(), 3200);
   } catch (err) {
-    mostrarError(err.message);
+    let mensaje = err.message;
+    if (err.name === "AbortError") mensaje = "⏳ El servidor tardó mucho. Intenta de nuevo.";
+    mostrarError(mensaje);
     bloqueado = false;
-  } finally {
-    mostrarCargando(false);
-  }
+  } finally { mostrarCargando(false); }
 }
 
-// ==============================================
-// CONFIRMACIÓN
-// ==============================================
 function mostrarConfirmacion(tipo, mensaje) {
   const esEntrada = tipo === "ENTRADA";
   confirmBox.className = "modal-contenido confirm-" + (esEntrada ? "entrada" : "salida");
   etiquetaEstado.textContent = esEntrada ? "✅ ENTRADA REGISTRADA" : "⏰ SALIDA REGISTRADA";
   mensajeConfirmacion.textContent = mensaje;
   confirmacion.classList.add("activo");
-  setTimeout(() => confirmacion.classList.remove("activo"), 3000);
+  setTimeout(() => confirmacion.classList.remove("activo"), 3200);
 }
 
-// ==============================================
-// RELOJ
-// ==============================================
 function actualizarReloj() {
-  const fecha = new Date();
-  horaEl.textContent = fecha.toLocaleTimeString("es-PE");
-  fechaEl.textContent = fecha.toLocaleDateString("es-PE", {
-    weekday: "long", day: "numeric", month: "long", year: "numeric"
-  });
+  const f = new Date();
+  horaEl.textContent = f.toLocaleTimeString("es-PE");
+  fechaEl.textContent = f.toLocaleDateString("es-PE", { weekday:"long", day:"numeric", month:"long", year:"numeric" });
 }
-setInterval(actualizarReloj, 1000);
-actualizarReloj();
+setInterval(actualizarReloj, 1000); actualizarReloj();
 
-// ==============================================
-// INSTALACIÓN PWA
-// ==============================================
 let deferredPrompt;
-window.addEventListener("beforeinstallprompt", (e) => {
-  e.preventDefault();
-  deferredPrompt = e;
-  installBtn.style.display = "block";
-});
-installBtn.addEventListener("click", async () => {
-  if (!deferredPrompt) return;
-  installBtn.style.display = "none";
-  deferredPrompt.prompt();
-  deferredPrompt = null;
-});
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferredPrompt = e; installBtn.style.display = "block"; });
+installBtn.addEventListener("click", async () => { if (!deferredPrompt) return; installBtn.style.display = "none"; deferredPrompt.prompt(); deferredPrompt = null; });
 
-// ==============================================
-// SERVICE WORKER
-// ==============================================
 if ("serviceWorker" in navigator) {
-  window.addEventListener("load", async () => {
-    try {
-      await navigator.serviceWorker.register("sw.js");
-    } catch (err) {
-      console.warn("Service Worker no disponible");
-    }
-  });
+  window.addEventListener("load", async () => { try { await navigator.serviceWorker.register("sw.js"); } catch {} });
 }
 </script>
-
 </body>
 </html>
