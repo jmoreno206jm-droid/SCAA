@@ -1,4 +1,4 @@
-const CACHE_NAME = "asistencia-v11";
+const CACHE_NAME = "asistencia-v1";
 
 const STATIC_ASSETS = [
   "./",
